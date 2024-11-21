@@ -1,0 +1,84 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { fetchPatients } from "../../utils/fetchPatients";
+import type { Patient } from "../../types/Patient";
+
+// Define getStaticPaths to generate paths for each patient
+export async function getStaticPaths() {
+  // Helper function to create slugs from names within the scope of getStaticPaths
+  function createSlug(name: string): string {
+    return name.toLowerCase().replace(/\s+/g, '-');
+  }
+
+  const patients: Patient[] = await fetchPatients();
+
+  // Use createSlug within getStaticPaths
+  return patients.map((patient) => ({
+    params: { patient: createSlug(patient.name) },
+  }));
+}
+
+// Get the patient's slug from the URL parameters
+const { patient } = Astro.params;
+
+// Define createSlug again in the main scope
+function createSlug(name: string): string {
+  return name.toLowerCase().replace(/\s+/g, '-');
+}
+
+// Fetch all patients and find the matching one based on the slug
+let selectedPatient: Patient | null = null;
+try {
+  const patients: Patient[] = await fetchPatients();
+  selectedPatient = patients.find(p => createSlug(p.name) === patient) || null;
+} catch (error) {
+  console.error("Error fetching patient data:", error);
+}
+
+if (!selectedPatient) {
+  throw new Error(`Patient "${patient}" not found.`);
+}
+
+// Normalize risk level to ensure consistent matching (case insensitive and trimmed)
+const normalizedRisk = selectedPatient.risk ? selectedPatient.risk.toLowerCase().trim() : '';
+
+// Determine the risk color class
+const riskClass = normalizedRisk === 'low risk' ? 'bg-green-200' :
+                  normalizedRisk === 'moderate risk' ? 'bg-yellow-200' :
+                  normalizedRisk === 'high risk' ? 'bg-red-200' :
+                  'bg-gray-200';
+---
+
+<Layout title={`${selectedPatient.name} Overview`}>
+  <div class="container mx-auto px-4 py-8 bg-[#FDF9F4] shadow-lg rounded-lg mt-5">
+    <div class={`flex items-center ${riskClass} p-6 rounded-lg`}>
+      <img src={selectedPatient.profileImage || '/default-profile.png'} alt={`${selectedPatient.name}'s Profile`} class="w-32 h-32 rounded-full" />
+      <div class="ml-6">
+        <h2 class="text-2xl font-bold">{selectedPatient.name}</h2>
+        <p>Age: {selectedPatient.age}</p>
+        <p>Gender: {selectedPatient.gender}</p>
+        <p>Risk Level: {selectedPatient.risk}</p>
+      </div>
+    </div>
+
+    <!-- Display the patient's detailed profile information -->
+    <div class="mt-6 p-6 bg-white rounded-lg shadow-md">
+      <h3 class="text-xl font-semibold">Detailed Information</h3>
+      <p><strong>ID:</strong> {selectedPatient.id}</p>
+      <p><strong>Occupation:</strong> {selectedPatient.occupation}</p>
+      <p><strong>Diagnosis:</strong> {selectedPatient.diagnosis}</p>
+      <p><strong>Weight:</strong> {selectedPatient.weight} kg</p>
+      <p><strong>Height:</strong> {selectedPatient.height} cm</p>
+      <p><strong>BMI:</strong> {selectedPatient.bmi}</p>
+      <p><strong>Estimated Energy Intake:</strong> {selectedPatient.estimated_energy_intake} kcal</p>
+      <p><strong>Physical Activity:</strong> {selectedPatient.physical_activity}</p>
+      <p><strong>Meals:</strong>{selectedPatient.meals}</p>
+      <p><strong>Motivation (Importance):</strong> {selectedPatient.motivation_importance}</p>
+      <p><strong>Motivation (Confidence):</strong> {selectedPatient.motivation_confidence}</p>
+      <p><strong>Motivation (Readiness):</strong> {selectedPatient.motivation_readiness}</p>
+      <p><strong>Birthday:</strong> {selectedPatient.birthday}</p>
+      <p><strong>Visits:</strong> {selectedPatient.visits}</p>
+      <p><strong>New Patient:</strong> {selectedPatient.isNew ? 'Yes' : 'No'}</p>
+    </div>
+  </div>
+</Layout>

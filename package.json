@@ -10,8 +10,27 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^4.14.3",
-    "@astrojs/check": "^0.9.3",
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/react": "^3.6.2",
+    "@astrojs/solid-js": "^4.4.2",
+    "@astrojs/tailwind": "^5.1.2",
+    "@types/react": "^18.3.8",
+    "@types/react-dom": "^18.3.0",
+    "astro": "^4.16.9",
+    "axios": "^1.7.7",
+    "chart.js": "^4.4.6",
+    "franken-ui": "^1.1.0",
+    "jspdf": "^2.5.2",
+    "postcss": "^8.4.47",
+    "react": "^18.3.1",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18.3.1",
+    "solid-js": "^1.8.22",
+    "tailwindcss": "^3.4.10",
     "typescript": "^5.5.4"
+  },
+  "devDependencies": {
+    "@types/chart.js": "^2.9.41",
+    "@types/react-chartjs-2": "^2.5.7"
   }
 }
