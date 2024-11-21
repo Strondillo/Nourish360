@@ -1,0 +1,32 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { fetchPatients } from '../utils/fetchPatients';
+import type { Patient } from '../types/Patient';
+import Info from '../components/Info.astro';
+
+const patients: Patient[] = await fetchPatients();
+console.log('Patients:', patients); // Log the patients to check if they are being passed correctly
+---
+
+<Layout title="Nourish360" isRNDPage={true}> 
+    <div class="flex flex-col items-center">
+        <h1 class="text-4xl font-bold text-gray-800 mb-8">Patient List</h1>
+        {patients.length > 0 ? (
+            patients.map((patient: Patient) => (
+                <Info
+                    patientId={patient.id}
+                    name={patient.name}
+                    age={patient.age}
+                    diagnosis={patient.diagnosis}
+                    gender={patient.gender}
+                    occupation={patient.occupation}
+                    birthday={patient.birthday}
+                    risk={patient.risk}
+                    isNew={patient.isNew}
+                />
+            ))
+        ) : (
+            <p class="text-gray-500 text-center">No patients found.</p>
+        )}
+    </div>
+</Layout>

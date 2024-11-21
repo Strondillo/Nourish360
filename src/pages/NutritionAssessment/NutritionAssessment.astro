@@ -1,0 +1,53 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import AssessmentCard from "../../components/Cards/AssessmentCard.astro";
+---
+
+<Layout title="Nourish360" isRNDPage={true}>
+    <div class="bg-[#EDF9FF] flex flex-col items-center justify-center min-h-screen w-full bg-gradient-to-r">
+        <div class="text-center max-w-2xl">
+            <h1 class="text-5xl font-extrabold text-gray-800 mb-4">Nutrition Care Process</h1>
+            <p class="text-lg text-gray-600 mb-8">Select a category to view detailed information</p>
+            
+            <div class="flex flex-wrap gap-8 justify-center">
+                <AssessmentCard 
+                    title="Nutrition Assessment" 
+                    buttonText="View Details" 
+                    link=""
+                />
+                <AssessmentCard 
+                    title="Nutrition Diagnosis & Intervention" 
+                    buttonText="View Details" 
+                    link=""
+                />
+                <AssessmentCard 
+                    title="Nutrition Evaluation and Monitoring" 
+                    buttonText="View Details" 
+                    link=""
+                />
+            </div>
+        </div>
+
+        <div class="flex justify-between w-full max-w-2xl px-4 mt-12 mb-5">
+            
+            <button 
+                class="flex items-center justify-center bg-blue-500 text-white px-5 py-3 rounded-full hover:bg-blue-600 transition-transform transform hover:scale-105"
+                onclick="window.history.back()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back
+            </button>
+
+            <!-- Next Button positioned on the right -->
+            <button 
+                class="flex items-center justify-center bg-blue-500 text-white px-5 py-3 rounded-full hover:bg-blue-600 transition-transform transform hover:scale-105"
+                onclick="window.location.href='/NutritionAssessment/BiochemicalData'">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+                Next
+            </button>
+        </div>
+    </div>
+</Layout>

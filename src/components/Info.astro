@@ -1,0 +1,24 @@
+---
+const { patientId, name, age, diagnosis, gender, occupation, birthday, risk, isNew } = Astro.props;
+
+// Normalize the risk level for consistent matching (case insensitive and trimmed)
+const normalizedRisk = risk ? risk.toLowerCase().trim() : '';
+
+// Define the class based on the normalized risk level
+const cardClass = normalizedRisk === 'low risk' ? 'bg-green-200' :
+                  normalizedRisk === 'moderate risk' ? 'bg-yellow-200' :
+                  normalizedRisk === 'high risk' ? 'bg-red-200' :
+                  'bg-gray-200'; // Default color if risk is not specified
+---
+
+<div class={`shadow-md rounded-lg p-6 border border-gray-200 ${cardClass}`}>
+    <h2 class="text-xl font-semibold text-gray-800 mb-2">{name}</h2>
+    <h3 class="text-xl font-semibold text-gray-800 mb-2">{isNew}</h3>
+    <p class="text-gray-600 mb-1"><strong>ID:</strong> {patientId}</p>
+    <p class="text-gray-600 mb-1"><strong>Age:</strong> {age}</p>
+    <p class="text-gray-600 mb-1"><strong>Diagnosis:</strong> {diagnosis}</p>
+    <p class="text-gray-600 mb-1"><strong>Gender:</strong> {gender}</p>
+    <p class="text-gray-600 mb-1"><strong>Occupation:</strong> {occupation}</p>
+    <p class="text-gray-600 mb-1"><strong>Birthday:</strong> {birthday}</p>
+    <p class="text-gray-600 mb-1"><strong>Risk:</strong> {risk}</p>
+</div>
