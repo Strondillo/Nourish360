@@ -1,37 +1,9 @@
 ---
-const patients = [
-  {
-    id: 1,
-    name: "John Doe",
-    risk: "Moderate Risk",
-    lastVisit: "2024-09-15",
-    status: "Active",
-    assignedDoctor: "Dr. Smith",
-    monitoring: true,
-    imageUrl: "/Patients/Ellipse 13.png",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    risk: "High Risk",
-    lastVisit: "2024-09-10",
-    status: "Discharged",
-    assignedDoctor: "Dr. Clark",
-    monitoring: false,
-    imageUrl: "/Patients/Ellipse 12.png",
-  },
-  {
-    id: 3,
-    name: "Averil McCloch",
-    risk: "Low Risk",
-    lastVisit: "2024-09-15",
-    status: "Active",
-    assignedDoctor: "Dr. Mark",
-    monitoring: true,
-    imageUrl: "/Patients/Ellipse 10.png",
-  },
-  // Add more patient records here
-];
+import { fetchPatients } from "../utils/fetchPatients"; // Adjust the import path based on your project structure
+import type { Patient } from "../types/Patient";
+
+// Fetch patient data from Strapi
+const patients: Patient[] = await fetchPatients();
 ---
 
 <div class="container mx-auto p-6">
@@ -60,50 +32,60 @@ const patients = [
           <th class="py-2 px-4 bg-gray-200 font-semibold text-gray-700">ID</th>
           <th class="py-2 px-4 bg-gray-200 font-semibold text-gray-700">Patient's Name</th>
           <th class="py-2 px-4 bg-gray-200 font-semibold text-gray-700">Risk Level</th>
-          <th class="py-2 px-4 bg-gray-200 font-semibold text-gray-700">Last Visit</th>
+          <th class="py-2 px-4 bg-gray-200 font-semibold text-gray-700">Visits</th>
           <th class="py-2 px-4 bg-gray-200 font-semibold text-gray-700">Status</th>
           <th class="py-2 px-4 bg-gray-200 font-semibold text-gray-700">Assigned Doctor</th>
           <th class="py-2 px-4 bg-gray-200 font-semibold text-gray-700">Monitoring</th>
         </tr>
       </thead>
       <tbody>
-        {patients.map((patient) => {
-          const profileUrl = `/patients/${patient.id}`;
+        {patients.length > 0 ? (
+          patients.map((patient) => {
+            const profileUrl = `/patients/${patient.id}`; // Adjust URL if you're using slugs instead of IDs
 
-          return (
-            <tr 
-              class="hover:bg-gray-100 cursor-pointer" 
-              onclick={`location.href='${profileUrl}'`}
-            >
-              <td class="py-2 px-4 border-b border-gray-300 text-center">{patient.id}</td>
-              <td class="py-2 px-4 border-b border-gray-300 text-center">
-                <div class="flex items-center">
-                  <img src={patient.imageUrl} alt={patient.name} class="w-8 h-8 rounded-full mr-2" />
-                  {patient.name}
-                </div>
-              </td>
-              <td class="py-2 px-4 border-b border-gray-300 text-center">
-                <span class={`px-2 py-1 rounded-full ${
-                  patient.risk === "High Risk" ? 'bg-red-500 text-white' : 
-                  patient.risk === "Moderate Risk" ? 'bg-yellow-300 text-black' : 
-                  'bg-green-500 text-white'
-                }`}>
-                  {patient.risk}
-                </span>
-              </td>
-              <td class="py-2 px-4 border-b border-gray-300 text-center">{patient.lastVisit}</td>
-              <td class="py-2 px-4 border-b border-gray-300 text-center">{patient.status}</td>
-              <td class="py-2 px-4 border-b border-gray-300 text-center">{patient.assignedDoctor}</td>
-              <td class="py-2 px-4 border-b border-gray-300 text-center">
-                {patient.monitoring ? (
-                  <span class="text-green-500 font-semibold">Yes</span>
-                ) : (
-                  <span class="text-red-500 font-semibold">No</span>
-                )}
-              </td>
-            </tr>
-          );
-        })}
+            // Normalize the risk level for consistent styling
+            const normalizedRisk = patient.risk?.toLowerCase().trim();
+            const riskClass = normalizedRisk === "high risk"
+              ? "bg-red-500 text-white"
+              : normalizedRisk === "moderate risk"
+              ? "bg-yellow-300 text-black"
+              : "bg-green-500 text-white";
+
+            return (
+              <tr 
+                class="hover:bg-gray-100 cursor-pointer" 
+                onclick={`location.href='${profileUrl}'`}
+              >
+                <td class="py-2 px-4 border-b border-gray-300 text-center">{patient.id}</td>
+                <td class="py-2 px-4 border-b border-gray-300 text-center">
+                  <div class="flex items-center">
+                    <img src={patient.profileImage || '/default-profile.png'} alt={patient.name} class="w-8 h-8 rounded-full mr-2" />
+                    {patient.name}
+                  </div>
+                </td>
+                <td class="py-2 px-4 border-b border-gray-300 text-center">
+                  <span class={`px-2 py-1 rounded-full ${riskClass}`}>
+                    {patient.risk || "Unknown"}
+                  </span>
+                </td>
+                <td class="py-2 px-4 border-b border-gray-300 text-center">{patient.visits || "N/A"}</td>
+                <td class="py-2 px-4 border-b border-gray-300 text-center">{patient.status || "N/A"}</td>
+                <td class="py-2 px-4 border-b border-gray-300 text-center">{patient.assignedDoctor || "N/A"}</td>
+                <td class="py-2 px-4 border-b border-gray-300 text-center">
+                  {patient.monitoring ? (
+                    <span class="text-green-500 font-semibold">Yes</span>
+                  ) : (
+                    <span class="text-red-500 font-semibold">No</span>
+                  )}
+                </td>
+              </tr>
+            );
+          })
+        ) : (
+          <tr>
+            <td colspan="7" class="text-center py-4 text-gray-500">No patients found.</td>
+          </tr>
+        )}
       </tbody>
     </table>
   </div>
@@ -112,7 +94,7 @@ const patients = [
   <div class="flex justify-between items-center mt-6">
     <div>
       <button class="text-gray-500 hover:text-gray-700">&#9664;</button>
-      <span class="mx-2">1-20 of 100</span>
+      <span class="mx-2">1-20 of {patients.length}</span>
       <button class="text-gray-500 hover:text-gray-700">&#9654;</button>
     </div>
     <div>

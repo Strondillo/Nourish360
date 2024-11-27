@@ -1,70 +1,19 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-export async function getStaticPaths() {
-  const patients = [
-    {
-      id: 1,
-      name: "John Doe",
-      age: "35 yrs. old",
-      sex: "Male",
-      occupation: "Software Developer",
-      livingSituation: "Lives alone in an apartment",
-      risk: "Moderate Risk",
-      dailyIntake: "2800 kcal",
-      physicalActivity: [
-        "Occasionally goes for a run",
-        "Walks to work (30 minutes, 5 days/week)"
-      ],
-      lastVisit: "2024-09-15",
-      status: "Active",
-      assignedDoctor: "Dr. Smith",
-      monitoring: true,
-      imageUrl: "/Patients/Ellipse 13.png",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      age: "42 yrs. old",
-      sex: "Female",
-      occupation: "Marketing Manager",
-      livingSituation: "Lives with spouse and two children",
-      risk: "High Risk",
-      dailyIntake: "3200 kcal",
-      physicalActivity: [
-        "Attends gym classes twice a week",
-        "Takes short walks in the evening"
-      ],
-      lastVisit: "2024-09-10",
-      status: "Discharged",
-      assignedDoctor: "Dr. Clark",
-      monitoring: false,
-      imageUrl: "/Patients/Ellipse 12.png",
-    },
-    {
-      id: 3,
-      name: "Averil McCloch",
-      age: "28 yrs. old",
-      sex: "Male",
-      occupation: "Data Analyst",
-      livingSituation: "Lives with roommates",
-      risk: "Low Risk",
-      dailyIntake: "2600 kcal",
-      physicalActivity: [
-        "Cycles to work (20 minutes, 4 days/week)"
-      ],
-      lastVisit: "2024-09-15",
-      status: "Active",
-      assignedDoctor: "Dr. Mark",
-      monitoring: true,
-      imageUrl: "/Patients/Ellipse 10.png",
-    },
-  ];
+import { fetchPatients } from "../../utils/fetchPatients";
+import type { Patient } from "../../types/Patient";
 
+// Define getStaticPaths to generate paths dynamically
+export async function getStaticPaths() {
+  const patients: Patient[] = await fetchPatients();
+
+  // Generate paths based on patient IDs
   return patients.map((patient) => ({
     params: { id: patient.id.toString() },
   }));
 }
 
+// Get the patient ID from the URL parameters
 const { id } = Astro.params;
 const patientId = parseInt(id, 10);
 
@@ -72,138 +21,104 @@ if (isNaN(patientId)) {
   throw new Error(`Invalid ID: ${id}`);
 }
 
-const patients = [
-  {
-    id: 1,
-    name: "John Doe",
-    age: "35 yrs. old",
-    sex: "Male",
-    occupation: "Software Developer",
-    livingSituation: "Lives alone in an apartment",
-    risk: "Moderate Risk",
-    dailyIntake: "2800 kcal",
-    physicalActivity: [
-      "Occasionally goes for a run",
-      "Walks to work (30 minutes, 5 days/week)"
-    ],
-    lastVisit: "2024-09-15",
-    status: "Active",
-    assignedDoctor: "Dr. Smith",
-    monitoring: true,
-    imageUrl: "/Patients/Ellipse 13.png",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    age: "42 yrs. old",
-    sex: "Female",
-    occupation: "Marketing Manager",
-    livingSituation: "Lives with spouse and two children",
-    risk: "High Risk",
-    dailyIntake: "3200 kcal",
-    physicalActivity: [
-      "Attends gym classes twice a week",
-      "Takes short walks in the evening"
-    ],
-    lastVisit: "2024-09-10",
-    status: "Discharged",
-    assignedDoctor: "Dr. Clark",
-    monitoring: false,
-    imageUrl: "/Patients/Ellipse 12.png",
-  },
-  {
-    id: 3,
-    name: "Averil McCloch",
-    age: "28 yrs. old",
-    sex: "Male",
-    occupation: "Data Analyst",
-    livingSituation: "Lives with roommates",
-    risk: "Low Risk",
-    dailyIntake: "2600 kcal",
-    physicalActivity: [
-      "Cycles to work (20 minutes, 4 days/week)"
-    ],
-    lastVisit: "2024-09-15",
-    status: "Active",
-    assignedDoctor: "Dr. Mark",
-    monitoring: true,
-    imageUrl: "/Patients/Ellipse 10.png",
-  },
-];
+// Fetch all patients and find the matching patient by ID
+let selectedPatient: Patient | null = null;
+try {
+  const patients: Patient[] = await fetchPatients();
+  selectedPatient = patients.find((p) => p.id === patientId) || null;
+} catch (error) {
+  console.error("Error fetching patient data:", error);
+}
 
-const patient = patients.find((p) => p.id === patientId);
-
-if (!patient) {
+if (!selectedPatient) {
   throw new Error(`Patient with ID ${id} not found`);
 }
 
-const riskClass = patient.risk === 'Low Risk' ? 'bg-green-200' : 
-                  patient.risk === 'Moderate Risk' ? 'bg-yellow-200' : 
-                  'bg-red-200';
+// Normalize risk level to determine color class
+const normalizedRisk = selectedPatient.risk ? selectedPatient.risk.toLowerCase().trim() : '';
+const riskClass = normalizedRisk === 'low risk' ? 'bg-green-200' :
+                  normalizedRisk === 'moderate risk' ? 'bg-yellow-200' :
+                  normalizedRisk === 'high risk' ? 'bg-red-200' :
+                  'bg-gray-200';
 ---
 
-<Layout title={`${patient.name} Overview`} isRNDPage={true}>
-    <div class="container mx-auto px-4 py-8 bg-[#FDF9F4] shadow-lg rounded-lg mt-5 mb-5 text-black">
-        <div class="flex gap-6">
-            <!-- Patient Summary Card -->
-            <div class={`${riskClass} p-6 rounded-lg shadow-md w-1/3`}>
-                <img src={patient.imageUrl} alt={patient.name} class="w-32 h-32 rounded-full mx-auto" />
-                <h2 class="text-xl font-bold text-center mt-4">{patient.name}</h2>
-                <p class="text-center">{patient.risk}</p>
-                <div class="mt-4">
-                    <p><strong>Age:</strong> {patient.age}</p>
-                    <p><strong>Sex:</strong> {patient.sex}</p>
-                    <p><strong>Occupation:</strong> {patient.occupation}</p>
-                    <p><strong>Living situation:</strong> {patient.livingSituation}</p>
-                    <p><strong>Estimated daily caloric intake:</strong> {patient.dailyIntake}</p>
-                    <p><strong>Physical activity:</strong></p>
-                    <ul class="ml-4 list-disc">
-                        {patient.physicalActivity.map(activity => (
-                            <li>{activity}</li>
-                        ))}
-                    </ul>
-                </div>
-            </div>
-            <!-- Detailed Information -->
-            <div class="flex-1 bg-white p-6 rounded-lg shadow-md text-black">
-                <h3 class="text-2xl font-semibold">Patient Overview</h3>
-                <p class="mt-4">
-                    During the initial appointment, the registered dietitian nutritionist (RDN) collects detailed
-                    information about the patient’s lifestyle, dietary habits, and caloric intake. This section will
-                    include more specifics based on patient’s data.
-                </p>
-                <!-- Placeholder for Patient Statements and Notes -->
-                <div class="mt-6">
-                    <h4 class="text-xl font-semibold">Patient’s Statement</h4>
-                    <ul class="mt-2 list-disc ml-6">
-                        <li>"I am ready to make a change."</li>
-                        <li>"I am sure that I can be successful."</li>
-                        <li>"I am ready to begin the work to make a change."</li>
-                    </ul>
-                </div>
-                <div class="mt-6">
-                    <h4 class="text-xl font-semibold">Note</h4>
-                    <textarea
-                        class="w-full p-4 border rounded-lg mt-2"
-                        placeholder="Type remarks regarding etiology/cause or signs and symptoms are resolved."
-                        class="text-black"
-                    ></textarea>
-                </div>
-            </div>
+<Layout title={`${selectedPatient.name} Overview`} isRNDPage={true}>
+  <div class="container mx-auto px-4 py-8 bg-[#FDF9F4] shadow-lg rounded-lg mt-5 mb-5 text-black">
+    <div class="flex gap-6">
+      <!-- Patient Summary Card -->
+      <div class={`${riskClass} p-6 rounded-lg shadow-md w-1/3`}>
+        <img src={selectedPatient.profileImage || '/default-profile.png'} alt={selectedPatient.name} class="w-32 h-32 rounded-full mx-auto" />
+        <h2 class="text-xl font-bold text-center mt-4">{selectedPatient.name}</h2>
+        <p class="text-center">{selectedPatient.risk}</p>
+        <div class="mt-4">
+          <p><strong>Age:</strong> {selectedPatient.age} yrs. old</p>
+          <p><strong>Gender:</strong> {selectedPatient.gender}</p>
+          <p><strong>Occupation:</strong> {selectedPatient.occupation}</p>
+          <p><strong>Weight:</strong> {selectedPatient.weight} kg</p>
+          <p><strong>Height:</strong> {selectedPatient.height} cm</p>
+          <p><strong>BMI:</strong> {selectedPatient.bmi}</p>
         </div>
-        <!-- Button group directly beneath the container -->
-        <div class="flex justify-between mt-8">
-            <button 
-                onclick="history.back()" 
-                class="bg-gray-200 text-black px-4 py-2 rounded hover:bg-gray-300">
-                Back
-            </button>
-            
-            <button 
-            onclick="window.location.href='/NutritionAssessment/NutritionAssessment'" 
-            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-            Nutrition Care Process
-           </button>
+      </div>
+      <!-- Detailed Information -->
+      <div class="flex-1 bg-white p-6 rounded-lg shadow-md text-black">
+        <h3 class="text-2xl font-semibold">Detailed Information</h3>
+        <p class="mt-4">
+          During the initial appointment, the registered dietitian nutritionist (RDN) collects detailed
+          information about the patient’s lifestyle, dietary habits, and caloric intake.
+        </p>
+        <!-- Biochemical Data -->
+        <div class="mt-6">
+          <h4 class="text-xl font-semibold">Biochemical Data</h4>
+          <p>{selectedPatient.biochemical || "No biochemical data available."}</p>
         </div>
+        <!-- Estimated Energy Intake -->
+        <div class="mt-6">
+          <h4 class="text-xl font-semibold">Estimated Energy Intake</h4>
+          <p>{selectedPatient.estimated_energy_intake || "Not provided"} kcal</p>
+        </div>
+        <!-- Meals -->
+        <div class="mt-6">
+          <h4 class="text-xl font-semibold">Meals</h4>
+          <p>{selectedPatient.meals || "No meal information available."}</p>
+        </div>
+        <!-- Motivation -->
+        <div class="mt-6">
+          <h4 class="text-xl font-semibold">Motivation Factors</h4>
+          <p><strong>Importance:</strong> {selectedPatient.motivation_importance || "Not provided"}</p>
+          <p><strong>Confidence:</strong> {selectedPatient.motivation_confidence || "Not provided"}</p>
+          <p><strong>Readiness:</strong> {selectedPatient.motivation_readiness || "Not provided"}</p>
+        </div>
+        <!-- Physical Activity -->
+        <div class="mt-6">
+          <h4 class="text-xl font-semibold">Physical Activity</h4>
+          <ul class="mt-2 list-disc ml-6">
+            {selectedPatient.physical_activity.split(',').map((activity) => (
+              <li>{activity.trim()}</li>
+            ))}
+          </ul>
+        </div>
+        <!-- Notes -->
+        <div class="mt-6">
+          <h4 class="text-xl font-semibold">Patient’s Notes</h4>
+          <textarea
+            class="w-full p-4 border rounded-lg mt-2"
+            placeholder="Enter notes for this patient."
+          ></textarea>
+        </div>
+      </div>
     </div>
+    <!-- Button group -->
+    <div class="flex justify-between mt-8">
+      <button 
+        onclick="history.back()" 
+        class="bg-gray-200 text-black px-4 py-2 rounded hover:bg-gray-300">
+        Back
+      </button>
+      <button 
+        onclick="window.location.href='/NutritionAssessment/NutritionAssessment'" 
+        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        Nutrition Care Process
+      </button>
+    </div>
+  </div>
 </Layout>

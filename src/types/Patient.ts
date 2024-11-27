@@ -10,6 +10,7 @@ export interface Patient {
   height: number;
   bmi: number;
   estimated_energy_intake: number;
+  biochemical: string;
   physical_activity: string;
   meals: string;
   motivation_importance: number;
@@ -20,5 +21,4 @@ export interface Patient {
   visits: number;         // Add this line
   isNew: boolean;         // Add this line
   profileImage: string;   // Add this line
-  // Add other properties as needed based on your data structure
 }
