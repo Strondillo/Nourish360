@@ -1,19 +1,57 @@
+<script lang="ts">
+  async function handleLogin(event) {
+    event.preventDefault(); // Prevent page reload on form submission
+
+    const formData = new FormData(event.target);
+
+    // Get email and password from the form
+    const email = formData.get('email');
+    const password = formData.get('password');
+
+    try {
+      // Send login request to the server
+      const response = await fetch('http://127.0.0.1:1337/api/custom-user/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error.message || 'Failed to login.');
+      }
+
+      const data = await response.json();
+
+      // Save the token (you can use localStorage or cookies)
+      localStorage.setItem('token', data.token);
+
+      alert('Login successful!');
+      // Redirect to a dashboard or home page
+      window.location.href = '/Doctor';
+    } catch (error) {
+      console.error('Error:', error.message || 'An unknown error occurred');
+      alert(error.message || 'An unknown error occurred');
+    }
+  }
+</script>
+
 <form class="login-form">
   <!-- Replace the h1 with an image -->
   <img src="/icons/Doctor.png" alt="Login Icon" class="login-icon mb-12">
   
-  <label for="username" class="login-label">Username:</label>
-  <input type="text" id="username" name="username" class="login-input" required>
-
   <label for="email" class="login-label">Email:</label>
-  <input type="email" id="email" name="email" class="login-input" required>
-  
+  <input type="email" id="email" name="email" class="login-input" required />
+
   <label for="password" class="login-label">Password:</label>
-  <input type="password" id="password" name="password" class="login-input" required>
+  <input type="password" id="password" name="password" class="login-input" required />
   
   <div class="button-group">
       <button type="submit" class="login-button">Login</button>
       <a href="/Signup" class="signup-button">Sign Up</a>
+  </div>
   </div>
   
   <!-- Additional Sign-In Options -->
