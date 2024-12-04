@@ -17,8 +17,8 @@ export interface Patient {
   motivation_confidence: number;
   motivation_readiness: number;
   birthday: number; 
-  risk: string;           // Add this line
-  visits: number;         // Add this line
+  risk: string;           
+  visits: number;         
   isNew: boolean;         // Add this line
   profileImage: string;   // Add this line
 }

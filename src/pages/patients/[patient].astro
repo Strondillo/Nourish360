@@ -39,14 +39,16 @@ if (!selectedPatient) {
   throw new Error(`Patient "${patient}" not found.`);
 }
 
-// Normalize risk level to ensure consistent matching (case insensitive and trimmed)
+
 const normalizedRisk = selectedPatient.risk ? selectedPatient.risk.toLowerCase().trim() : '';
 
 // Determine the risk color class
-const riskClass = normalizedRisk === 'low risk' ? 'bg-green-200' :
-                  normalizedRisk === 'moderate risk' ? 'bg-yellow-200' :
-                  normalizedRisk === 'high risk' ? 'bg-red-200' :
-                  'bg-gray-200';
+const riskClass =
+  normalizedRisk.includes('low') ? 'bg-green-200' :
+  normalizedRisk.includes('moderate') ? 'bg-yellow-200' :
+  normalizedRisk.includes('high') ? 'bg-red-200' :
+  'bg-gray-200'; 
+
 ---
 
 <Layout title={`${selectedPatient.name} Overview`}>

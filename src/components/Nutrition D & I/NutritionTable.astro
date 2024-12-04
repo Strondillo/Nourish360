@@ -7,9 +7,17 @@ const rows = [
 ];  
 
 const colors = [
-  { name: '', value: '#A2F9A1' },
-  { name: '', value: '#F9CB86' },
-  { name: '', value: '#FB937C' },
+  { name: '', value: '#EFF2F5' },
+  { name: 'Low', value: '#A2F9A1' },
+  { name: 'Medium', value: '#F9CB86' },
+  { name: 'High', value: '#FB937C' },
+];
+
+const status = [
+  { name: '', value: '#EFF2F5' },
+  { name: 'Resoloved', value: '#A2F9A1' },
+  { name: 'In-progress', value: '#F9CB86' },
+  { name: 'Not Resolved', value: '#FB937C' },
 ];
 ---
 <div class="p-4 border rounded-lg bg-white shadow-md">
@@ -64,13 +72,13 @@ const colors = [
           <td class="p-2 border text-center">
             <div class="relative">
               <select
-                id={`colorDropdown-priority-${index}`}
+                id={`colorDropdown-status-${index}`}
                 class="w-full h-8 text-sm px-3 border border-gray-300 bg-gray-100 text-gray-700 rounded-md appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style="background-image: none;" 
               >
-                {colors.map((color: { name: string; value: string }) => (
-                  <option value={color.value} style={`background-color: ${color.value}; color: black;`}>
-                    {color.name}
+                {status.map((status: { name: string; value: string }) => (
+                  <option value={status.value} style={`background-color: ${status.value}; color: black;`}>
+                    {status.name}
                   </option>
                 ))}
               </select>
@@ -98,10 +106,10 @@ const colors = [
     const priorityDropdowns = [...document.querySelectorAll('[id^="colorDropdown-priority-"]')];
     const colorDropdowns = [...document.querySelectorAll('[id^="colorDropdown-"]')];
 
-    // Apply color change behavior for both types of dropdowns
+    
     priorityDropdowns.concat(colorDropdowns).forEach((dropdown) => {
       if (dropdown instanceof HTMLSelectElement) {
-        // Set initial color based on the default selected option
+       
         dropdown.style.backgroundColor = dropdown.value;
         dropdown.style.color = 'black';
 

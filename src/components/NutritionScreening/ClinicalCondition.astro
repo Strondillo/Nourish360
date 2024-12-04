@@ -98,7 +98,7 @@ const { formType } = Astro.props;
         </div>
         <div class="checkbox">
           <input type="checkbox" id="ca" name="clinical_condition" />
-          <label for="ca">Congenital anomalies (e.g. Down's Syndrome, Craniofacial anomalies, Spina bifida, Hydrocephalus, Chiari Malformation)</label>
+          <label for="ca" class="">Congenital anomalies</label>
         </div>
         <div class="checkbox">
           <input type="checkbox" id="dm" name="clinical_condition" />
@@ -106,7 +106,7 @@ const { formType } = Astro.props;
         </div>
         <div class="checkbox">
           <input type="checkbox" id="gas" name="clinical_condition" />
-          <label for="cva">Gastrointestinal disease or complication/impending GI surgery (e.g. Pancreatitis, Inflammatory Bowel Disease, GERD, Malabsoroption conditions, Crohn's Disease)</label>
+          <label for="GD" >Gastrointestinal disease or complication/impending GI surgery </label>
         </div>
         <div class="checkbox">
           <input type="checkbox" id="iem" name="clinical_condition" />
@@ -114,7 +114,7 @@ const { formType } = Astro.props;
         </div>
         <div class="checkbox">
           <input type="checkbox" id="id" name="clinical_condition" />
-          <label for="id">Inflammatory diseases (e.g. Sepsis, Encephalitis, Meningitis, Kawasaki Disease, Enterocolitis, Community-acquired pneumonia, Upper/Lower Respiratory Tract Infection)</label>
+          <label for="id">Inflammatory diseases </label>
         </div>
         <div class="checkbox">
           <input type="checkbox" id="liv" name="clinical_condition" />
@@ -122,7 +122,7 @@ const { formType } = Astro.props;
         </div>
         <div class="checkbox">
           <input type="checkbox" id="malb" name="clinical_condition" />
-          <label for="malb">Malabsorption (celiac sprue, ulcerative colitis, Crohn's disease, short bowel syndrome)</label>
+          <label for="malb">Malabsorption </label>
         </div>
         <div class="checkbox">
           <input type="checkbox" id="mtt" name="clinical_condition" />
@@ -196,11 +196,13 @@ const { formType } = Astro.props;
     }
     
     .checkbox label {
-      margin-left: 5px;
+      margin-left: 20px;
       font-size: 16px;
       color: #333;
       cursor: pointer;
       user-select: none;
     }
+
+    
     </style>
 </div>

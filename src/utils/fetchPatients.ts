@@ -37,9 +37,10 @@ export async function fetchPatients(): Promise<Patient[]> {
       risk: patient.risk,
       visits: patient.visits,
       isNew: patient.isNew,
-      profileImage: patient.profileImage?.url
-        ? `http://127.0.0.1:1337${patient.profileImage.url}`
-        : "/default-profile.png", // Fallback to a default profile image
+      profileImage:
+        patient.profileImage?.length > 0
+          ? `http://127.0.0.1:1337${patient.profileImage[0].url}`
+          : "/default-profile.png", // Fallback to a default profile image
     }));
   } catch (error) {
     console.error("Error fetching patients:", error);

@@ -1,44 +1,99 @@
----
----
-<form class="signup-form">
-    <!-- Replace the h1 with an image -->
-    <img src="/icons/Nurse.png" alt="Signup Icon" class="signup-icon mb-12">
+<script lang="ts">
+  async function handleSignup(event) {
+    event.preventDefault(); 
+
+    const formData = new FormData(event.target);
+
     
-    <label for="firstName" class="signup-label">First Name:</label>
-    <input type="text" id="firstName" name="firstName" class="signup-input" required>
-  
-    <label for="lastName" class="signup-label">Last Name:</label>
-    <input type="text" id="lastName" name="lastName" class="signup-input" required>
-    
-    <label for="email" class="signup-label">Email:</label>
-    <input type="email" id="email" name="email" class="signup-input" required>
-    
-    <label for="password" class="signup-label">Password:</label>
-    <input type="password" id="password" name="password" class="signup-input" required>
-    
-    <label for="confirmPassword" class="signup-label">Confirm Password:</label>
-    <input type="password" id="confirmPassword" name="confirmPassword" class="signup-input" required>
-    
-    <label for="prcId" class="signup-label">PRC ID:</label>
-    <input type="text" id="prcId" name="prcId" class="signup-input" required>
-    
-    <div class="button-group">
-        <button type="submit" class="create-account-button">Create Account</button>
-    </div>
-    
-    <p class="already-have-account">
-        Already Have an Account? <a href="/Login" class="login-link">Login</a>
-    </p>
+    if (formData.get('Password') !== formData.get('confirmPassword')) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    const userData = {
+      data: {
+        First_Name: formData.get('First_Name'),
+        Last_Name: formData.get('Last_Name'),
+        Email: formData.get('Email'),
+        Password: formData.get('Password'),
+        prcId: formData.get('prcId'),
+        AccountType: formData.get('AccountType'),
+      },
+    };
+
+    try {
+      const response = await fetch('http://127.0.0.1:1337/api/custom-users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error?.error?.message || "Failed to create account.");
+      }
+
+      const result = await response.json();
+      alert("Account created successfully!");
+
+      // Optionally redirect to the login page
+      window.location.href = '/Sign-in';
+    } catch (error) {
+      console.error("Error:", error.message || "An unknown error occurred.");
+      alert(error.message || "An unknown error occurred.");
+    }
+  }
+</script>
+
+
+
+<form class="signup-form" onsubmit="handleSignup(event)">
+  <img src="/Logo(1).png" alt="Signup Icon" class="signup-icon mb-12">
+
+  <label for="firstName" class="signup-label">First Name:</label>
+  <input type="text" id="firstName" name="First_Name" class="signup-input" required>
+
+  <label for="lastName" class="signup-label">Last Name:</label>
+  <input type="text" id="lastName" name="Last_Name" class="signup-input" required>
+
+  <label for="email" class="signup-label">Email:</label>
+  <input type="email" id="email" name="Email" class="signup-input" required>
+
+  <label for="password" class="signup-label">Password:</label>
+  <input type="password" id="password" name="Password" class="signup-input" required>
+
+  <label for="confirmPassword" class="signup-label">Confirm Password:</label>
+  <input type="password" id="confirmPassword" name="confirmPassword" class="signup-input" required>
+
+  <label for="prcId" class="signup-label">PRC ID:</label>
+  <input type="text" id="prcId" name="prcId" class="signup-input" required>
+
+  <label for="accountType" class="signup-label">Account Type:</label>
+  <select id="accountType" name="AccountType" class="signup-input" required>
+    <option value="" disabled selected>Select account type</option>
+    <option value="Doctor">Doctor</option>
+    <option value="RND">RND</option>
+  </select>
+
+  <div class="button-group">
+    <button type="submit" class="create-account-button">Create Account</button>
+  </div>
+
+  <p class="already-have-account">
+    Already Have an Account? <a href="/Sign-in" class="login-link">Login</a>
+  </p>
 </form>
 
 <style>
   .signup-form {
-    max-width: 650px;
-    min-width: 350px;
-    margin: 50px auto 50px; /* Adjusted margin-top to move form down */
+    max-width: 680px;
+    min-width: 380px;
+    margin: 50px auto 50px;
     padding: 20px;
     background-color: #fff;
-    border-radius: 55px; /* Updated corner radius */
+    border-radius: 55px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
@@ -46,8 +101,8 @@
   }
   
   .signup-icon {
-    width: 60px; /* Adjust the size of the icon */
-    height: 60px;
+    width: 90px;
+    height: 90px;
   }
   
   .signup-label {
@@ -60,8 +115,8 @@
 
   .signup-input {
     width: 100%;
-    padding: 8px; /* Adjust padding */
-    margin-bottom: 12px; /* Reduce margin */
+    padding: 8px;
+    margin-bottom: 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
@@ -77,12 +132,12 @@
 
   .create-account-button {
     width: 100%;
-    padding: 10px; /* Adjust padding */
+    padding: 10px;
     background-color: #004d40;
     color: #fff;
     border: none;
     border-radius: 4px;
-    font-size: 14px; /* Adjust font size */
+    font-size: 14px;
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -107,4 +162,4 @@
   .login-link:hover {
     text-decoration: underline;
   }
-</style>
+</style>.

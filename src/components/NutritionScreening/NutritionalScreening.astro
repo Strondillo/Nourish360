@@ -9,7 +9,7 @@ export interface NutritionalScreeningFormProps {
 const { formType } = Astro.props;
 ---
 
-<div class="nutritional-form p-8 bg-[#faf3e3] max-w-4xl mx-auto rounded-lg">
+<div class="nutritional-form p-8 bg-[#faf3e3] max-w-6xl mx-auto rounded-lg">
   <h1 class="text-center text-2xl mb-4 font-museo">
     {formType === 'adult' ? 'Admission Adult' : 'Admission Pediatric'}
 </h1>
@@ -24,13 +24,13 @@ const { formType } = Astro.props;
         <button
           type="button"
           onclick="window.history.back()"
-          class="bg-[#f2ad45] text-white rounded px-6 py-2 text-lg hover:bg-[#e5943a] transition-colors"
+          class="uk-buttonuk-button-primary bg-[#f2ad45] text-white rounded px-6 py-2 text-lg hover:bg-[#e5943a] transition-colors"
         >
           Back
         </button>
         <button
           type="submit"
-          class="bg-[#f2ad45] text-white rounded px-6 py-2 text-lg hover:bg-[#e5943a] transition-colors"
+          class="uk-buttonuk-button-primary bg-[#f2ad45] text-white rounded px-6 py-2 text-lg hover:bg-[#e5943a] transition-colors"
         >
           Submit
         </button>

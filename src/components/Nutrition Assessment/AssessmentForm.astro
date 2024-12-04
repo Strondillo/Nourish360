@@ -7,7 +7,7 @@ const { formData } = Astro.props;
     <div class="relative p-4">
         <h3 class="font-bold text-lg mb-3">Client History (CH)</h3>
         <textarea 
-            class="w-full p-2 border rounded" 
+            class="uk-textarea w-full p-2 border rounded" 
             rows="4"
         >{formData.clientHistory}</textarea>
         <button
@@ -27,7 +27,7 @@ const { formData } = Astro.props;
     <div class="relative p-4">
         <h3 class="font-bold text-lg mb-3">Food/Nutrition-Related History (FH)</h3>
         <textarea 
-            class="w-full p-2 border rounded" 
+            class="uk-textarea w-full p-2 border rounded" 
             rows="4"
         >{formData.foodNutrition}</textarea>
         <button
@@ -46,7 +46,7 @@ const { formData } = Astro.props;
     <div class="relative p-4">
         <h3 class="font-bold text-lg mb-3">Biochemical Data (BD)</h3>
         <textarea 
-            class="w-full p-2 border rounded" 
+            class="uk-textarea w-full p-2 border rounded" 
             rows="4"
         >{formData.biochemicalData}</textarea>
         <button
@@ -65,7 +65,7 @@ const { formData } = Astro.props;
     <div class="relative p-4">
         <h3 class="font-bold text-lg mb-3">Anthropometric Measurements (AD)</h3>
         <textarea 
-            class="w-full p-2 border rounded" 
+            class="uk-textarea w-full p-2 border rounded" 
             rows="4"
         >{formData.anthropometric}</textarea>
         <button
@@ -84,7 +84,7 @@ const { formData } = Astro.props;
     <div class="relative p-4">
         <h3 class="font-bold text-lg mb-3">Nutrition-Focused Physical Findings (PD)</h3>
         <textarea 
-            class="w-full p-2 border rounded" 
+            class="uk-textarea w-full p-2 border rounded" 
             rows="4"
         >{formData.physicalFindings}</textarea>
         <button
@@ -121,13 +121,19 @@ const { formData } = Astro.props;
     <!-- Progress Evaluation Section -->
     <div>
         <h3 class="font-bold text-lg mb-3">Progress Evaluation (EV)</h3>
-        <select class="w-full p-2 border rounded">
-            <option value="in-progress" selected={formData.progressEvaluation === 'in-progress'}>
-                In-progress
-            </option>
-            <option value="completed" selected={formData.progressEvaluation === 'completed'}>
-                Completed
-            </option>
+        <select class="uk-select w-full p-2 border rounded">
+          <option value="new" selected={formData.progressEvaluation === 'new'}>
+            New
+        </option>
+        <option value="active" selected={formData.progressEvaluation === 'active'}>
+            Active
+        </option>
+        <option value="resolve" selected={formData.progressEvaluation === 'resolve'}>
+            Resolved
+        </option>
+        <option value="discontinued" selected={formData.progressEvaluation === 'discontinued'}>
+            Discontinued
+        </option>
         </select>
     </div>
 
