@@ -17,17 +17,18 @@ const rndCards = [
 
 const doctorWelcomeCard = {
   title: 'Welcome, Doctor!',
-  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  description: 'The doctor is responsible for managing patient screenings, referring patients to specific RNDs, and overseeing patient records and details.',
   buttonText: 'Learn more',
   buttonLink: '#',
-  imageSrc: '/Logo.png' // Path to the image you want to display
+  imageSrc: '/Logo.png' // Update the image path as needed
 };
 
 const doctorServiceCards = [
-  { title: 'Lorem Ipsum', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', buttonText: 'More Info', buttonLink: '#' },
-  { title: 'Lorem Ipsum', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', buttonText: 'More Info', buttonLink: '#' },
-  { title: 'Lorem Ipsum', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', buttonText: 'More Info', buttonLink: '#' },
+  { title: 'Patient Screening', description: 'Perform screenings to assess patients and determine their medical needs.', buttonText: 'More Info', buttonLink: '#' },
+  { title: 'Refer Patients', description: 'Coordinate with RNDs by referring patients for specific nutritional care plans.', buttonText: 'More Info', buttonLink: '#' },
+  { title: 'Manage Records', description: 'Ensure patient records are accurate, updated, and accessible.', buttonText: 'More Info', buttonLink: '#' },
 ];
+
 ---
 <section class="card-section py-20">
   <div class="container mx-auto">
@@ -45,7 +46,7 @@ const doctorServiceCards = [
         <!-- Other Cards for RND -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           {rndCards.map(card => (
-            <div class="card bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl hover:scale-105 transition-transform duration-300 ease-in-out">
+            <div class="uk-card uk-card-body bg-[#a2d8f3] p-6 rounded-lg shadow-lg hover:shadow-2xl hover:scale-105 transition-transform duration-300 ease-in-out">
               <h3 class="card-title">{card.title}</h3>
               <p class="card-description">{card.description}</p>
               <a href={card.buttonLink} class="card-button">{card.buttonText}</a>
@@ -70,10 +71,10 @@ const doctorServiceCards = [
         <!-- Service Cards for Doctor -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           {doctorServiceCards.map(serviceCard => (
-            <div class="card bg-yellow-300 shadow-md p-4 rounded-lg hover:shadow-2xl hover:scale-105 transition-transform duration-300 ease-in-out">
+            <div class="uk-card uk-card-body bg-yellow-200 p-6 rounded-lg shadow-lg hover:shadow-2xl hover:scale-105 transition-transform duration-300 ease-in-out">
               <h2 class="text-xl font-bold">{serviceCard.title}</h2>
               <p class="mt-2 mb-2 text-sm">{serviceCard.description}</p>
-              <a href={serviceCard.buttonLink} class="mt-4 bg-yellow-400 text-white py-1 px-4 rounded-full">{serviceCard.buttonText}</a>
+              <a href={serviceCard.buttonLink} class="service-button">{serviceCard.buttonText}</a>
             </div>
           ))}
         </div>
@@ -83,12 +84,12 @@ const doctorServiceCards = [
 </section>
 
 <style>
-  /* Shared Styles */
+
 
   /* Welcome Card Styles */
   .welcome-card {
     display: flex;
-    background-color: #F0F8FF;
+    background-color: #c9e6f5;
     border-radius: 15px;
     padding: 30px;
     text-align: left;
@@ -186,6 +187,7 @@ const doctorServiceCards = [
     border-radius: 5px;
     font-size: 1.1rem;
     transition: background-color 0.3s ease;
+    
   }
 
   .welcome-button2:hover {
@@ -237,6 +239,26 @@ const doctorServiceCards = [
   /* Doctor Service Card Styles */
   .card.bg-yellow-300 {
     background-color: #FBD982;
+    
+  }
+
+  .service-button{
+    background-color: #f7c138;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    margin-top: 30px; /* Push the button to the bottom of the card */
+    align-self: center;
+  }
+
+  .uk-card{
+    text-align: center;
+  }
+  .service-button:hover{
+    background-color: #f5970a;
   }
 
   .text-xl {
@@ -262,4 +284,23 @@ const doctorServiceCards = [
   .rounded-full {
     border-radius: 9999px;
   }
+
+  .uk-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px; /* Increase padding for larger size */
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 240px; /* Match RND card height */
+  width: 100%; /* Ensure consistency across screens */
+}
+
+.uk-card:hover {
+  transform: translateY(-5px); /* Subtle hover effect */
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+}
 </style>
