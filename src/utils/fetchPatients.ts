@@ -30,6 +30,7 @@ export async function fetchPatients(): Promise<Patient[]> {
       estimated_energy_intake: patient.estimated_energy_intake,
       biochemical_data: patient.biochemical_data,
       physical_activity: patient.physical_activity,
+      meals:patient.meals,
       motivation_importance: patient.motivation_importance,
       motivation_confidence: patient.motivation_confidence,
       motivation_readiness: patient.motivation_readiness,

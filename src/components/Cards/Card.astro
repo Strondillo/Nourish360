@@ -2,31 +2,61 @@
 const { accountType } = Astro.props;
 
 const rndWelcomeCard = {
-  title: 'Welcome, Doctor!',
-  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  buttonText: 'Learn more',
-  buttonLink: '#',
-  imageSrc: '/Logo.png' // Path to the image you want to display
+  title: 'Welcome to Nourish360, RND!',
+  description: 'Nourish360 empowers you to assess, plan, and implement personalized nutrition care for patients. Let’s streamline your workflow and make an impact!',
+  buttonText: 'Start Your Journey',
+  buttonLink: '/ncp-overview', // Redirect to the NCP overview or onboarding page
+  imageSrc: '/Logo.png' // Update with your preferred image path
 };
 
 const rndCards = [
-  { title: 'Lorem ipsum 1', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', buttonText: 'More Info', buttonLink: '#' },
-  { title: 'Lorem ipsum 2', description: 'Another card description.', buttonText: 'Details', buttonLink: '#' },
-  { title: 'Lorem ipsum 3', description: 'Further details about this card.', buttonText: 'Explore', buttonLink: '#' },
+  {
+    title: 'Nutrition Assessment',
+    description: 'Gather and analyze patient data to identify nutrition-related problems.',
+    buttonText: 'Assess Now',
+    buttonLink: '/nutrition-assessment' // Update with the actual route for assessments
+  },
+  {
+    title: 'Create Care Plans',
+    description: 'Develop and document individualized nutrition care plans for patients.',
+    buttonText: 'Plan Care',
+    buttonLink: '/care-plans' // Update with the actual route for care planning
+  },
+  {
+    title: 'Monitor & Evaluate',
+    description: 'Track patient progress and adjust care plans as needed.',
+    buttonText: 'Monitor Progress',
+    buttonLink: '/monitoring' // Update with the actual route for monitoring
+  }
 ];
 
 const doctorWelcomeCard = {
-  title: 'Welcome, Doctor!',
-  description: 'The doctor is responsible for managing patient screenings, referring patients to specific RNDs, and overseeing patient records and details.',
-  buttonText: 'Learn more',
-  buttonLink: '#',
-  imageSrc: '/Logo.png' // Update the image path as needed
+  title: 'Welcome to Nourish360, Doctor!',
+  description: 'We’re glad to have you onboard. Nourish360 helps you manage patient screenings, refer patients to Registered Nutritionists-Dietitians (RNDs), and oversee patient records seamlessly. Let’s get started!',
+  buttonText: 'Get Started',
+  buttonLink: '/NutritionScreening', // Redirect to a help or onboarding page
+  imageSrc: '/Logo.png' // Update with your preferred image path
 };
 
 const doctorServiceCards = [
-  { title: 'Patient Screening', description: 'Perform screenings to assess patients and determine their medical needs.', buttonText: 'More Info', buttonLink: '#' },
-  { title: 'Refer Patients', description: 'Coordinate with RNDs by referring patients for specific nutritional care plans.', buttonText: 'More Info', buttonLink: '#' },
-  { title: 'Manage Records', description: 'Ensure patient records are accurate, updated, and accessible.', buttonText: 'More Info', buttonLink: '#' },
+  {
+    title: 'Manage Patients',
+    description: 'Easily access and update patient details, medical histories, and care plans.',
+    buttonText: 'View Patients',
+    buttonLink: '/PatientList' // Update with the actual route for patient management
+  },
+  {
+    title: 'Refer Patients',
+    description: 'Coordinate with RNDs to create tailored nutrition plans for your patients.',
+    buttonText: 'Refer Now',
+    buttonLink: '/Nutritionist' // Update with the actual route for referrals
+  },
+  {
+    title: 'Nutrition Screening',
+    description: 'Monitor patient progress and outcomes to ensure the best care is provided.',
+    buttonText: 'Screening',
+    buttonLink: '/NutritionScreening' // Update with the actual route for progress tracking
+  }
 ];
 
 ---

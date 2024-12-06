@@ -1,4 +1,11 @@
  // src/types/Patient.ts
+ export interface RichTextChild {
+  type: string;
+  text?: string;
+  url?: string;
+  children?: RichTextChild[];
+}
+
 export interface Patient {
   id: number;
   name: string;
@@ -10,7 +17,7 @@ export interface Patient {
   height: number;
   bmi: number;
   estimated_energy_intake: number;
-  biochemical: string;
+  biochemical: RichTextChild[];
   physical_activity: string;
   meals: string;
   motivation_importance: number;

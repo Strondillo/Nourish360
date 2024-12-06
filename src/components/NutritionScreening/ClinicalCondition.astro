@@ -153,6 +153,18 @@ const { formType } = Astro.props;
   </div>
 
   <style>
+    .uk-checkbox{
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .uk-checkbox label {
+      margin-left: 20px;
+      font-size: 16px;
+      color: #333;
+      cursor: pointer;
+      user-select: none;
+    }
     .checkbox-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr); /* Create 2 equal columns */
@@ -202,7 +214,5 @@ const { formType } = Astro.props;
       cursor: pointer;
       user-select: none;
     }
-
-    
     </style>
 </div>
