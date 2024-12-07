@@ -69,15 +69,6 @@ const patients: Patient[] = await fetchPatients();
                   </span>
                 </td>
                 <td class="py-2 px-4 border-b border-gray-300 text-center">{patient.visits || "N/A"}</td>
-                <td class="py-2 px-4 border-b border-gray-300 text-center">{patient.status || "N/A"}</td>
-                <td class="py-2 px-4 border-b border-gray-300 text-center">{patient.assignedDoctor || "N/A"}</td>
-                <td class="py-2 px-4 border-b border-gray-300 text-center">
-                  {patient.monitoring ? (
-                    <span class="text-green-500 font-semibold">Yes</span>
-                  ) : (
-                    <span class="text-red-500 font-semibold">No</span>
-                  )}
-                </td>
               </tr>
             );
           })
