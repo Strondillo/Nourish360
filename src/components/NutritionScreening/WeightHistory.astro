@@ -9,34 +9,34 @@ const { formType } = Astro.props;
   <h2 class="font-bold font-sans mt-5">B. Intake/Weight History</h2>
   <div class="checkbox-grid">
     <div class="checkbox">
-      <input type="checkbox" id="weight_loss" name="weight_history" />
+      <input type="checkbox" id="weight_loss" name="weight_history" value="Unintentional weight loss in the past 3 months"/>
       <label for="weight_loss">Unintentional weight loss in the past 3 months</label>
     </div>
     <div class="checkbox">
-      <input type="checkbox" id="reduced_diet" name="weight_history" />
+      <input type="checkbox" id="reduced_diet" name="weight_history" value="Reduced dietary intake in the past week"/>
       <label for="reduced_diet">Reduced dietary intake in the past week</label>
     </div>
     {formType === 'adult' ? (
       <>
         <!-- Adult specific checkboxes -->
         <div class="checkbox">
-          <input type="checkbox" id="BMI" name="weight_history" />
+          <input type="checkbox" id="BMI" name="weight_history" value="BMI below 18.5 or above 30"/>
           <label for="BMI">BMI below 18.5 or above 30</label>
         </div>
         <div class="checkbox">
-          <input type="checkbox" id="pregnancy_age" name="weight_history" />
-          <label for="pregnancy_age">Pregnant patient is aged 18 or > 35 years</label>
+          <input type="checkbox" id="pregnancy_age" name="weight_history" value="Pregnant patient is aged 18 or 35 years"/>
+          <label for="pregnancy_age">Pregnant patient is aged 18 or 35 years</label>
         </div>
         <div class="checkbox">
-          <input type="checkbox" id="preg_hyper" name="weight_history" />
+          <input type="checkbox" id="preg_hyper" name="weight_history" value="Pregnancy with Hyperemesis gravidarum/ Pregnancy-Induced Hypertension"/>
           <label for="preg_hyper">Pregnancy with Hyperemesis gravidarum/ Pregnancy-Induced Hypertension</label>
         </div>
           <div class="checkbox">
-          <input type="checkbox" id="multi_preg" name="weight_history" />
+          <input type="checkbox" id="multi_preg" name="weight_history" value="Multiple Pregnancy"/>
           <label for="multi_preg">Multiple Pregnancy</label>
         </div>
           <div class="checkbox">
-          <input type="checkbox" id="lac_mom" name="weight_history" />
+          <input type="checkbox" id="lac_mom" name="weight_history" value="Multiple Pregnancy"/>
           <label for="lac_mom">Lactating Mother</label>
         </div>
       </>
@@ -44,35 +44,35 @@ const { formType } = Astro.props;
       <>
         <!-- Pediatric specific checkboxes -->
         <div class="checkbox">
-          <input type="checkbox" id="breastmilk" name="weight_history" />
+          <input type="checkbox" id="breastmilk" name="weight_history" value="Patient on breastmilk feeding"/>
           <label for="breastmilk">Patient on breastmilk feeding</label>
         </div>
         <div class="checkbox">
-          <input type="checkbox" id="zscore" name="weight_history" />
+          <input type="checkbox" id="zscore" name="weight_history" value="BMI z-scores above +2 and below -2 (for ages 5-18)"/>
           <label for="zscore">BMI z-scores above +2 and below -2 (for ages 5-18)</label>
         </div>
         <div class="checkbox">
-          <input type="checkbox" id="" name="weight_history" />
+          <input type="checkbox" id="" name="weight_history" value="Unintentional weight loss in the past 3 months"/>
           <label for="">Unintentional weight loss in the past 3 months</label>
           </div>
           <div class="checkbox">
-          <input type="checkbox" id="" name="weight_history" />
+          <input type="checkbox" id="" name="weight_history" value="Reduced dietary intake in the past week"/>
           <label for="">Reduced dietary intake in the past week</label>
           </div>
           <div class="checkbox">
-          <input type="checkbox" id="" name="weight_history" />
+          <input type="checkbox" id="" name="weight_history" value="Reduction of dietary intake in the past week/s and/or during the hospital stay"/>
           <label for="">Reduction of dietary intake in the past week/s and/or during the hospital stay</label>
           </div>
           <div class="checkbox">
-          <input type="checkbox" id="" name="weight_history" />
+          <input type="checkbox" id="" name="weight_history" value="For patients ages 5 years old to 18 years old, 364 days:"/>
           <label for="">For patients ages 5 years old to 18 years old, 364 days:</label>
           </div>
           <div class="checkbox">
-          <input type="checkbox" id="" name="weight_history" />
-          <label for="">For patients ages >2-5 years old:o Weight for Height z-scores above +2 and below -2 (c/o RND)</label>
+          <input type="checkbox" id="" name="weight_history" value="For patients ages 2-5 years old:o Weight for Height z-scores above +2 and below -2 (c/o RND)"/>
+          <label for="">For patients ages 2-5 years old:o Weight for Height z-scores above +2 and below -2 (c/o RND)</label>
           </div>
           <div class="checkbox">
-          <input type="checkbox" id="" name="weight_history" />
+          <input type="checkbox" id="" name="weight_history" value="For patients ages 1 month - 2 years old: o Weight for Length z-scores above +2 and below -2 (c/o RND)"/>
           <label for="">For patients ages 1 month - 2 years old: o Weight for Length z-scores above +2 and below -2 (c/o RND)</label>
           </div>
         </>
