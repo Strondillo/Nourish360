@@ -9,7 +9,7 @@
       id="name"
       name="name"
       required
-      class=" ml-3 mt-1 p-2 border border-gray-300 rounded-md bg-amber-50 focus:outline-none focus:ring-2 focus:ring-blue-400 w-52"
+      class="ml-3 mt-1 p-2 border border-gray-300 rounded-md bg-amber-50 focus:outline-none focus:ring-2 focus:ring-blue-400 w-52"
     />
   </div>
   <div class="field">
@@ -19,83 +19,98 @@
       id="age"
       name="age"
       required
-      class=" ml-7 mt-1 p-2 border border-gray-300 rounded-md bg-amber-50 focus:outline-none focus:ring-2 focus:ring-blue-400 w-52"
+      class="ml-7 mt-1 p-2 border border-gray-300 rounded-md bg-amber-50 focus:outline-none focus:ring-2 focus:ring-blue-400 w-52"
     />
   </div>
   <div class="field">
-    <label for="sex" class="font-semibold text-sm text-black">*Sex:</label>
+    <label for="gender" class="font-semibold text-sm text-black">*Gender:</label>
     <select
-      id="sex"
-      name="sex"
+      id="gender"
+      name="gender"
       required
-      class=" ml-7 mt-1 p-2 border border-gray-300 rounded-md bg-amber-50 focus:outline-none focus:ring-2 focus:ring-blue-400 w-52"
+      class="ml-7 mt-1 p-2 border border-gray-300 rounded-md bg-amber-50 focus:outline-none focus:ring-2 focus:ring-blue-400 w-52"
     >
-      <option></option>
+      <option value="" disabled selected>Select</option>
       <option value="male">Male</option>
       <option value="female">Female</option>
     </select>
   </div>
 
   <!-- Second Row -->
-  <div class="field ">
-    <label for="address" class="font-semibold text-sm text-black">*Address:</label>
+  <div class="field">
+    <label for="weight" class="font-semibold text-sm text-black">*Weight:</label>
     <input
-      type="text"
-      id="address"
-      name="address"
+      type="number"
+      id="weight"
+      name="weight"
       required
-      class="mt-1 p-2 border border-gray-300 rounded-md bg-amber-50 focus:outline-none focus:ring-2 focus:ring-blue-400 w-52"
+      class="ml-2 mt-1 p-2 border border-gray-300 rounded-md bg-amber-50 focus:outline-none focus:ring-2 focus:ring-blue-400 w-52"
     />
   </div>
   <div class="field">
     <label for="height" class="font-semibold text-sm text-black">*Height:</label>
     <input
-      type="text"
+      type="number"
       id="height"
       name="height"
       required
-      class=" ml-2 mt-1 p-2 border border-gray-300 rounded-md bg-amber-50 focus:outline-none focus:ring-2 focus:ring-blue-400 w-52"
+      class="ml-2 mt-1 p-2 border border-gray-300 rounded-md bg-amber-50 focus:outline-none focus:ring-2 focus:ring-blue-400 w-52"
     />
   </div>
-  <div class="field ">
-    <label for="weight" class="font-semibold text-sm text-black">*Weight:</label>
+  <div class="field">
+    <label for="bmi" class="font-semibold text-sm text-black">*BMI:</label>
     <input
       type="text"
-      id="weight"
-      name="weight"
-      required
-      class="mt-1 p-2 border border-gray-300 rounded-md bg-amber-50 focus:outline-none focus:ring-2 focus:ring-blue-400 w-52"
+      id="bmi"
+      name="bmi"
+      readonly
+      class="mt-1 p-2 border border-gray-300 rounded-md bg-amber-50 focus:outline-none w-52"
     />
+  </div>
+
+  <!-- Risk Level Selection -->
+  <div class="field col-span-2">
+    <label for="risk" class="font-semibold text-sm text-black">*Risk Level:</label>
+    <select
+      id="risk"
+      name="risk"
+      required
+      class="ml-2 mt-1 p-2 border border-gray-300 rounded-md bg-amber-50 focus:outline-none focus:ring-2 focus:ring-blue-400 w-52"
+    >
+      <option value="" disabled selected>Select Risk Level</option>
+      <option value="high">High Risk</option>
+      <option value="moderate">Moderate Risk</option>
+      <option value="low">Low Risk</option>
+    </select>
   </div>
 
   <!-- Large Text Areas -->
   <div class="field relative col-span-1">
     <label
-      for="diagnosis"
+      for="medical_diagnosis"
       class="absolute -top-4 left-0 text-black text-sm font-semibold px-1 mt-3"
     >
-    *Medical Diagnosis:
+      *Medical Diagnosis:
     </label>
     <textarea
-      id="diagnosis"
-      name="diagnosis"
+      id="medical_diagnosis"
+      name="medical_diagnosis"
       required
       class="mt-5 p-2 border border-gray-300 rounded-md bg-amber-50 focus:outline-none focus:ring-2 focus:ring-blue-400 h-36 w-full"
     ></textarea>
   </div>
   <div class="field relative col-span-1">
     <label
-      for="diet"
+      for="diet_prescription"
       class="absolute -top-4 left-0 text-black text-sm font-semibold px-1 mt-3"
     >
-    *Diet Prescription:
+      *Diet Prescription:
     </label>
     <textarea
-      id="diet"
-      name="diet"
+      id="diet_prescription"
+      name="diet_prescription"
       required
       class="mt-5 p-2 border border-gray-300 rounded-md bg-amber-50 focus:outline-none focus:ring-2 focus:ring-blue-400 h-36 w-full"
     ></textarea>
   </div>
-  
 </div>

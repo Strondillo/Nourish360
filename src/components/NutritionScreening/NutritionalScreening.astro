@@ -4,7 +4,7 @@ import ClinicalCondition from "./ClinicalCondition.astro";
 import WeightHistory from "./WeightHistory.astro";
 
 export interface NutritionalScreeningFormProps {
-  formType: string; // could be 'adult' or 'pediatric'
+  formType: string; 
 }
 const { formType } = Astro.props;
 ---
@@ -12,36 +12,111 @@ const { formType } = Astro.props;
 <div class="nutritional-form p-8 bg-[#faf3e3] max-w-6xl mx-auto rounded-lg">
   <h1 class="text-center text-2xl mb-4 font-museo">
     {formType === 'adult' ? 'Admission Adult' : 'Admission Pediatric'}
-</h1>
-  
-    <!-- Form content -->
-    <form id="nutritional-screening-form" class="flex flex-col">
-      <Patientinfo />
-      <ClinicalCondition formType={formType} />
-      <WeightHistory formType={formType} />
-  
-      <div class="flex justify-center gap-4 mt-6">
-        <button
-          type="button"
-          onclick="window.history.back()"
-          class="uk-buttonuk-button-primary bg-[#f2ad45] text-white rounded px-6 py-2 text-lg hover:bg-[#e5943a] transition-colors"
-        >
-          Back
-        </button>
-        <button
-          type="submit"
-          class="uk-buttonuk-button-primary bg-[#f2ad45] text-white rounded px-6 py-2 text-lg hover:bg-[#e5943a] transition-colors"
-        >
-          Submit
-        </button>
-      </div>
-    </form>
-  </div>
-  
-  <style>
+  </h1>
+
+  <!-- Form content -->
+  <form id="nutritional-screening-form" class="flex flex-col">
+    <Patientinfo />
+    <ClinicalCondition formType={formType} />
+    <WeightHistory formType={formType} />
+
+    <div class="flex justify-center gap-4 mt-6">
+      <button
+        type="button"
+        onclick="window.history.back()"
+        class="uk-buttonuk-button-primary bg-[#f2ad45] text-white rounded px-6 py-2 text-lg hover:bg-[#e5943a] transition-colors"
+      >
+        Back
+      </button>
+      <button
+        type="submit"
+        class="uk-buttonuk-button-primary bg-[#f2ad45] text-white rounded px-6 py-2 text-lg hover:bg-[#e5943a] transition-colors"
+      >
+        Submit
+      </button>
+    </div>
+  </form>
+</div>
+
+<script lang="ts">
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("nutritional-screening-form");
+    const heightInput = document.getElementById("height");
+    const weightInput = document.getElementById("weight");
+    const bmiInput = document.getElementById("bmi");
+
+    if (heightInput && weightInput) {
+      heightInput.addEventListener("input", calculateBMI);
+      weightInput.addEventListener("input", calculateBMI);
+    }
+
+    async function handleFormSubmit(event) {
+      event.preventDefault();
+
+      // Collect all form data
+      const formData = new FormData(form);
+
+      // Safely parse values without type assertions
+      const patientData = {
+        name: formData.get("name") || "",
+        age: parseInt(formData.get("age")) || null,
+        gender: formData.get("gender") || "",
+        living_situation: formData.get("address") || "",
+        diagnosis: formData.get("diagnosis") || "",
+        treatment: formData.get("diet") || "",
+        weight: parseFloat(formData.get("weight")) || null,
+        height: parseFloat(formData.get("height")) || null,
+        bmi: parseFloat(formData.get("bmi")) || null,
+        risk: formData.get("risk") || "",
+      };
+
+      try {
+        const response = await fetch("http://127.0.0.1:1337/api/patients", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            data: patientData,
+          }),
+        });
+
+        if (response.ok) {
+          console.log("Patient data submitted successfully!");
+          alert("Patient data submitted successfully!");
+        } else {
+          const errorResponse = await response.json();
+          console.error("Failed to submit patient data:", errorResponse);
+          alert("Failed to submit patient data.");
+        }
+      } catch (error) {
+        console.error("Error submitting patient data:", error);
+        alert("Error submitting patient data.");
+      }
+    }
+
+    function calculateBMI() {
+      if (heightInput && weightInput && bmiInput) {
+        const weight = parseFloat(weightInput.value) || 0;
+        const height = parseFloat(heightInput.value) || 0;
+        if (weight > 0 && height > 0) {
+          const bmi = (weight / Math.pow(height / 100, 2)).toFixed(1); // Assuming height is in cm
+          bmiInput.value = bmi;
+        } else {
+          bmiInput.value = ""; // Clear BMI if input is invalid
+        }
+      }
+    }
+
+    // Attach submit event listener
+    form.addEventListener("submit", handleFormSubmit);
+  });
+</script>
+
+<style>
   @import url('https://fonts.googleapis.com/css2?family=MuseoModerno:wght@400&display=swap');
-  
+
   .font-museo {
-      font-family: 'MuseoModerno', sans-serif;
+    font-family: 'MuseoModerno', sans-serif;
   }
-  </style>
+</style>

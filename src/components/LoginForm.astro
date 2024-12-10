@@ -1,21 +1,64 @@
-<form class="login-form">
-  
-  <img src="/icons/Nurse.png" alt="Login Icon" class="login-icon mb-12">
-  
-  <label for="username" class="login-label">Username:</label>
-  <input type="text" id="username" name="username" class="login-input" required>
+<script lang="ts">
+  async function handleLogin(event) {
+  event.preventDefault();
 
-  <label for="email" class="login-label">Email:</label>
-  <input type="email" id="email" name="email" class="login-input" required>
-  
-  <label for="password" class="login-label">Password:</label>
-  <input type="password" id="password" name="password" class="login-input" required>
-  
+  try {
+    const formData = new FormData(event.target);
+
+    const Email = formData.get('Email')?.toString().trim().toLowerCase();
+    const Password = formData.get('Password')?.toString().trim();
+
+    if (!Email || !Password) {
+      alert('Email and password are required!');
+      return;
+    }
+
+    console.log('Sending Login Data:', { Email, Password });
+
+    const response = await fetch('http://127.0.0.1:1337/api/custom-user/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ Email, Password }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Login failed:', errorData);
+      throw new Error(errorData.error?.message || 'Login failed.');
+    }
+
+    const data = await response.json();
+
+    if (!data.token) {
+      throw new Error('Invalid server response. Token is missing.');
+    }
+
+    localStorage.setItem('token', data.token);
+    alert('Login successful!');
+    window.location.href = '/Rnd';
+  } catch (error) {
+    console.error('Error:', error.message || 'An unknown error occurred.');
+    alert(error.message || 'An unknown error occurred.');
+  }
+}
+</script>
+
+<form class="login-form" onsubmit="handleLogin(event)">
+  <img src="/icons/Nurse.png" alt="Login Icon" class="login-icon mb-12" />
+
+  <label for="Email" class="login-label">Email:</label>
+  <input type="email" id="Email" name="Email" class="login-input" required />
+
+  <label for="Password" class="login-label">Password:</label>
+  <input type="password" id="Password" name="Password" class="login-input" required />
+
   <div class="button-group">
-      <button type="submit" class="login-button">Login</button>
-      <a href="/Signup" class="signup-button">Sign Up</a>
+    <button type="submit" class="login-button">Login</button>
+    <a href="/Signup" class="signup-button">Sign Up</a>
   </div>
-  
+
   <!-- Additional Sign-In Options -->
   <div class="social-signin">
     <p class="or">OR WITH</p>

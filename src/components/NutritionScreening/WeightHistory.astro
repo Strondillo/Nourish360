@@ -20,8 +20,8 @@ const { formType } = Astro.props;
       <>
         <!-- Adult specific checkboxes -->
         <div class="checkbox">
-          <input type="checkbox" id="bmi" name="weight_history" />
-          <label for="bmi">BMI below 18.5 or above 30</label>
+          <input type="checkbox" id="BMI" name="weight_history" />
+          <label for="BMI">BMI below 18.5 or above 30</label>
         </div>
         <div class="checkbox">
           <input type="checkbox" id="pregnancy_age" name="weight_history" />
@@ -48,8 +48,8 @@ const { formType } = Astro.props;
           <label for="breastmilk">Patient on breastmilk feeding</label>
         </div>
         <div class="checkbox">
-          <input type="checkbox" id="bmi_zscore" name="weight_history" />
-          <label for="bmi_zscore">BMI z-scores above +2 and below -2 (for ages 5-18)</label>
+          <input type="checkbox" id="zscore" name="weight_history" />
+          <label for="zscore">BMI z-scores above +2 and below -2 (for ages 5-18)</label>
         </div>
         <div class="checkbox">
           <input type="checkbox" id="" name="weight_history" />
