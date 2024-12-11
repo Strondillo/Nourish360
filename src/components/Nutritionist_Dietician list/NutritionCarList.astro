@@ -1,17 +1,52 @@
 ---
-const nutritionists = [
-  { name: "Maria Cruz", specialty: "Pediatric Nutrition", qualifications: " Registered Dietitian (RD), Certified Specialist in Pediatric Nutrition (CSPN) ",timings: "Mon - Fri, 9:00 AM to 5:00 PM", image: "../public/profiles/Ellipse 4.png", available: true},
-  { name: "David Kim", specialty: " Sports Nutrition", qualifications: "Registered Dietitian (RD), Certified Sports Nutritionist (CSN) ", timings: "Fri, 10:00 AM to 2:00 PM, Sat 9:00 AM to 12:00 PM", image: "../public/profiles/Ellipse 1.png", available: true,},
-  { name: "Luke Ramirez", specialty: "Clinical Nutrition", qualifications: "Registered Dietitian (RD), Certified Clinical Dietitian (CCD)", timings: "Fri, 9:00 AM to 5:00 PM, Sat 1:00 PM to 3:00 PM", image: "../public/profiles/Ellipse 2.png", available: false,},
-  { name: "Ana Santos", specialty: "General Nutrition", qualifications: "Registered Nutritionist-Dietitian (RND)", timings: "Mon - Fri, 10:00 AM to 2:00 PM, Sat 8:00 AM to 12:00 PM", image: "../public/profiles/Ellipse 3.png", available: false,},
-  { name: "Aisha Patel", specialty: "Geriatric Nutrition", qualifications: "Registered Dietitian (RD), Certified Dietitian Specialist in Gerontology (CDG)", timings: "Mon - Thu, 12:00 PM to 4:00 PM, Fri 9:00 AM to 1:00 PM", image:"../public/profiles/Ellipse 5.png", available: "True"},
-  // Add more nutritionists as necessary
-];
----
-<!-- Nutritionist-Dietician Cards -->
-<div class="grid grid-cols-3 gap-6">
+import { fetchCustomUsers } from "../../utils/fetchCustomUsers";
 
-    {nutritionists.map(nutritionist => (
+// Define the CustomUser type
+type CustomUser = {
+  name: string;
+  specialty: string;
+  qualifications: string;
+  timings: string;
+  image: string;
+  available: boolean;
+};
+
+// Existing nutritionists array
+const nutritionists = [
+  { name: "Maria Cruz", specialty: "Pediatric Nutrition", qualifications: " Registered Dietitian (RD), Certified Specialist in Pediatric Nutrition (CSPN) ", timings: "Mon - Fri, 9:00 AM to 5:00 PM", image: "../public/profiles/Ellipse 4.png", available: true },
+  { name: "David Kim", specialty: "Sports Nutrition", qualifications: "Registered Dietitian (RD), Certified Sports Nutritionist (CSN) ", timings: "Fri, 10:00 AM to 2:00 PM, Sat 9:00 AM to 12:00 PM", image: "../public/profiles/Ellipse 1.png", available: true },
+  { name: "Luke Ramirez", specialty: "Clinical Nutrition", qualifications: "Registered Dietitian (RD), Certified Clinical Dietitian (CCD)", timings: "Fri, 9:00 AM to 5:00 PM, Sat 1:00 PM to 3:00 PM", image: "../public/profiles/Ellipse 2.png", available: false },
+  { name: "Ana Santos", specialty: "General Nutrition", qualifications: "Registered Nutritionist-Dietitian (RND)", timings: "Mon - Fri, 10:00 AM to 2:00 PM, Sat 8:00 AM to 12:00 PM", image: "../public/profiles/Ellipse 3.png", available: false },
+  { name: "Aisha Patel", specialty: "Geriatric Nutrition", qualifications: "Registered Dietitian (RD), Certified Dietitian Specialist in Gerontology (CDG)", timings: "Mon - Thu, 12:00 PM to 4:00 PM, Fri 9:00 AM to 1:00 PM", image: "../public/profiles/Ellipse 5.png", available: true },
+];
+
+// Explicitly type customUsers
+let customUsers: CustomUser[] = [];
+
+try {
+  // Fetch the custom users with RND account type
+  const fetchedUsers = await fetchCustomUsers();
+
+  // Filter and map the RND users
+  customUsers = fetchedUsers
+    .filter((user: any) => user.accountType === "RND")
+    .map((user: any) => ({
+      name: `${user.firstName} ${user.lastName}`,
+      specialty: "Registered Nutritionist-Dietitian (RND)",
+      qualifications: "Registered Nutritionist-Dietitian (RND)",
+      timings: "Available timings not specified",
+      image: "/profiles/defaultimg.jpg", // Default profile image
+      available: true, // Assume all RND users are available
+    }));
+} catch (error) {
+  console.error("Error fetching CustomUsers:", error);
+}
+---
+<!-- Display Static Nutritionists -->
+<section class="nutritionists">
+  <h2 class="text-2xl font-bold mb-4">Static Nutritionists</h2>
+  <div class="grid grid-cols-3 gap-6">
+    {nutritionists.map((nutritionist) => (
       <div class="p-4 bg-white rounded-lg shadow-lg">
         <div class="flex items-center space-x-4">
           <img src={nutritionist.image} alt={nutritionist.name} class="w-16 h-16 rounded-full">
@@ -34,3 +69,33 @@ const nutritionists = [
       </div>
     ))}
   </div>
+</section>
+
+<!-- Display Fetched Custom Users -->
+<section class="custom-users mt-10">
+  <h2 class="text-2xl font-bold mb-4">Fetched RND Users</h2>
+  <div class="grid grid-cols-3 gap-6">
+    {customUsers.map((user) => (
+      <div class="p-4 bg-white rounded-lg shadow-lg">
+        <div class="flex items-center space-x-4">
+          <img src={user.image} alt={user.name} class="w-16 h-16 rounded-full">
+          <div>
+            <h3 class="text-xl font-semibold">{user.name}</h3>
+            <p class="text-sm text-yellow-500">{user.specialty}</p>
+            <p class="text-xs text-gray-500">{user.qualifications}</p>
+            <p class="text-sm">{user.timings}</p>
+          </div>
+        </div>
+        {user.available ? (
+          <button class="mt-4 w-full p-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+            Refer
+          </button>
+        ) : (
+          <button class="mt-4 w-full p-2 bg-gray-400 text-white rounded-lg" disabled>
+            Not Available
+          </button>
+        )}
+      </div>
+    ))}
+  </div>
+</section>

@@ -3,10 +3,19 @@ import Layout from "../layouts/Layout.astro";
 import FilterBar from "../components/FilterBar.astro";
 import PatientInfo from "../components/Cards/PatientInfo.astro";
 import { fetchPatients } from "../utils/fetchPatients";
+import { fetchScreenedPatients } from "../utils/fetchScreenedPatients";
 import type { Patient } from "../types/Patient";
+import type { ScreenedPatient } from "../types/ScreenedPatient";
 
 const patients: Patient[] = await fetchPatients();
-console.log('Patients:', patients);
+const screenedPatients: ScreenedPatient[] = await fetchScreenedPatients();
+
+const combinedPatients = [...patients, ...screenedPatients];
+console.log("Combined Patients:", combinedPatients);
+
+function isPatient(patient: Patient | ScreenedPatient): patient is Patient {
+  return (patient as Patient).visits !== undefined;
+}
 ---
 
 <Layout title="Nourish360" isDoctorPage={true}>
@@ -16,15 +25,17 @@ console.log('Patients:', patients);
 
         <!-- Patient List Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
-            {patients.length > 0 ? (
-                patients.map(patient => (
+            {combinedPatients.length > 0 ? (
+                combinedPatients.map(patient => (
                     <PatientInfo 
                         patientId={patient.id} 
                         name={patient.name} 
                         risk={patient.risk || 'Low Risk'} 
-                        visits={patient.visits || 1} 
-                        isNew={patient.isNew ? 'New' : ''} 
-                        profileImage={patient.profileImage || '/default-profile.png'} 
+                        visits={isPatient(patient) ? patient.visits || 1 : 1} 
+                        isNew={isPatient(patient) ? (patient.isNew ? 'New' : '') : ''} 
+                        profileImage={isPatient(patient) 
+                          ? patient.profileImage || '/Profiles/defaultimg.jpg' 
+                          : '/Profiles/defaultimg.jpg'} 
                     />
                 ))
             ) : (

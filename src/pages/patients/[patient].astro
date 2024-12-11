@@ -10,7 +10,7 @@ export async function getStaticPaths() {
     return name.toLowerCase().replace(/\s+/g, '-');
   }
 
-  const patients: Patient[] = await fetchPatients();
+  const patients: Patient[] = await fetchPatients();  
 
   // Use createSlug within getStaticPaths
   return patients.map((patient) => ({

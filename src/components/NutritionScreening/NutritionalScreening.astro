@@ -50,112 +50,79 @@ const { formType } = Astro.props;
     }
 
     async function handleFormSubmit(event) {
-    event.preventDefault();
+        event.preventDefault();
 
-  const formData = new FormData(event.target);
+        const formData = new FormData(event.target);
 
-  // Prepare patient data for the new collection type
-  const screenedPatientData = {
-    name: formData.get("name") || "",
-    age: parseInt(formData.get("age"), 10) || null,
-    gender: formData.get("gender") || "",
-    medical_diagnosis: formData.get("medical_diagnosis") || "",
-    diet_prescription: formData.get("diet_prescription") || "",
-    weight: parseFloat(formData.get("weight")) || null,
-    height: parseFloat(formData.get("height")) || null,
-    bmi: parseFloat(formData.get("bmi")) || null,
-    risk: formData.get("risk") || "",
-    clinical_conditions: [], // IDs of related ClinicalCondition entries
-    weight_histories: [], // IDs of related WeightHistory entries
-  };
+        const clinicalConditionPromises = Array.from(
+          document.querySelectorAll('input[name="clinical_condition"]:checked')
+        ).map(async (checkbox) => {
+          const response = await fetch("http://127.0.0.1:1337/api/clinical-conditions?populate=*", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ data: { name: checkbox.value } }),
+          });
+          
+            const result = await response.json();
+            if (response.ok && result.data) {
+              return result.data.id; // Return the ID of the created entry
+            } else {
+              throw new Error("Failed to create ClinicalCondition");
+            }
+          });
 
-  try {
-    // Create ClinicalConditions and get their IDs
-    const clinicalConditionPromises = Array.from(
-      document.querySelectorAll('input[name="clinical_condition"]:checked')
-    ).map(async (checkbox) => {
-      const response = await fetch(
-        "http://127.0.0.1:1337/api/clinical-conditions",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            data: { name: checkbox.id },
-          }),
+        const weightHistoryPromises = Array.from(
+          document.querySelectorAll('input[name="weight_history"]:checked')
+        ).map(async (checkbox) => {
+          const response = await fetch("http://127.0.0.1:1337/api/weight-histories?populate=*", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ data: { name: checkbox.value } }),
+          });
+          
+          const result = await response.json();
+            if (response.ok && result.data) {
+              return result.data.id; // Return the ID of the created entry
+            } else {
+              throw new Error("Failed to create WeightHistory");
+            }
+          });
+
+        const screenedPatientData = {
+          name: formData.get("name") || "",
+          age: parseInt(formData.get("age"), 10) || null,
+          gender: formData.get("gender") || "",
+          medical_diagnosis: formData.get("medical_diagnosis") || "",
+          diet_prescription: formData.get("diet_prescription") || "",
+          weight: parseFloat(formData.get("weight")) || null,
+          height: parseFloat(formData.get("height")) || null,
+          bmi: parseFloat(formData.get("bmi")) || null,
+          risk: formData.get("risk") || "",
+          clinical_conditions: await Promise.all(clinicalConditionPromises),
+          weight_histories: await Promise.all(weightHistoryPromises),
+        };
+
+        console.log("Payload being sent to Strapi:", JSON.stringify(screenedPatientData, null, 2));
+
+        try {
+          const patientResponse = await fetch("http://127.0.0.1:1337/api/screened-patients?populate=*", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ data: screenedPatientData }),
+          });
+
+          if (patientResponse.ok) {
+            alert("Screened patient data submitted successfully!");
+          } else {
+            const errorResponse = await patientResponse.json();
+            console.error("Failed to submit screened patient data:", errorResponse);
+            alert("Failed to submit screened patient data.");
+          }
+        } catch (error) {
+          console.error("Error submitting screened patient data:", error);
+          alert("Error submitting screened patient data.");
         }
-      );
-
-      const result = await response.json();
-      if (response.ok && result.data) {
-        return result.data.id; // Return the ID of the created entry
-      } else {
-        throw new Error("Failed to create ClinicalCondition");
       }
-    });
-
-    screenedPatientData.clinical_conditions = await Promise.all(
-      clinicalConditionPromises
-    );
-
-    // Create WeightHistories and get their IDs
-    const weightHistoryPromises = Array.from(
-      document.querySelectorAll('input[name="weight_history"]:checked')
-    ).map(async (checkbox) => {
-      const response = await fetch(
-        "http://127.0.0.1:1337/api/weight-histories",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            data: { name: checkbox.id },
-          }),
-        }
-      );
-
-      const result = await response.json();
-      if (response.ok && result.data) {
-        return result.data.id; // Return the ID of the created entry
-      } else {
-        throw new Error("Failed to create WeightHistory");
-      }
-    });
-
-    screenedPatientData.weight_histories = await Promise.all(
-      weightHistoryPromises
-    );
-
-    // Send the screened patient data to the new collection type
-    const patientResponse = await fetch(
-      "http://127.0.0.1:1337/api/screened-patients", // Use the new collection type API endpoint
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ data: screenedPatientData }),
-      }
-    );
-
-    if (patientResponse.ok) {
-      console.log("Screened patient data submitted successfully!");
-      alert("Screened patient data submitted successfully!");
-    } else {
-      const errorResponse = await patientResponse.json();
-      console.error("Failed to submit screened patient data:", errorResponse);
-      alert("Failed to submit screened patient data.");
-    }
-  } catch (error) {
-    console.error("Error submitting screened patient data:", error);
-    alert("Error submitting screened patient data.");
-  }
-}
-
-
-
 
     function calculateBMI() {
       if (heightInput && weightInput && bmiInput) {

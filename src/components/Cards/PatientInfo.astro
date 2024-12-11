@@ -11,14 +11,17 @@ const cardClass =
   normalizedRisk.includes('high') ? 'bg-red-200' :
   'bg-gray-200'; // Default color if risk is not specified
 
+// Generate the patient slug
 const patientSlug = name.toLowerCase().replace(/\s+/g, '-');
+
+// Construct the URL dynamically based on the slug
 const profileUrl = `/patients/${patientSlug}`;
 ---
 
 <a href={profileUrl} class="block transform transition duration-300 hover:scale-105 hover:shadow-lg no-underline">
   <div class={`w-30 h-30 p-4 rounded-lg shadow-md ${cardClass} flex flex-col justify-between cursor-pointer`}>
     <div class="flex justify-between items-center mb-2">
-      <img src={profileImage} alt={name} class="w-10 h-10 rounded-full" />
+      <img src={profileImage || '/defaultimg.jpg'} alt={name} class="w-10 h-10 rounded-full" />
       {isNew && <span class="text-sm text-blue-600">New</span>}
     </div>
     <h3 class="font-bold text-lg mb-1">{name}</h3>

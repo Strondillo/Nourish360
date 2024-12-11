@@ -1,0 +1,105 @@
+---
+// Imports
+import Layout from "../../layouts/Layout.astro";
+import { fetchScreenedPatients } from "../../utils/fetchScreenedPatients";
+import type { ScreenedPatient } from "../../types/ScreenedPatient";
+
+// Define getStaticPaths to generate paths for each screened patient
+export async function getStaticPaths() {
+  // Helper function to create slugs from names within the scope of getStaticPaths
+  function createSlug(name: string): string {
+    return name.toLowerCase().replace(/\s+/g, '-');
+  }
+
+  const screenedPatients = await fetchScreenedPatients();
+
+  // Use createSlug within getStaticPaths
+  return screenedPatients.map((screenedPatient) => ({
+    params: { screenedPatient: createSlug(screenedPatient.name) },
+  }));
+}
+
+// Get the screened patient's slug from the URL parameters
+const { screenedPatient } = Astro.params;
+
+// Define createSlug again in the main scope
+function createSlug(name: string): string {
+  return name.toLowerCase().replace(/\s+/g, '-');
+}
+
+// Fetch all screened patients and find the matching one based on the slug
+let selectedScreenedPatient = null;
+try {
+  const screenedPatients = await fetchScreenedPatients();
+  selectedScreenedPatient = screenedPatients.find(
+    (sp) => createSlug(sp.name) === screenedPatient
+  );
+} catch (error) {
+  console.error("Error fetching screened patient data:", error);
+}
+
+if (!selectedScreenedPatient) {
+  throw new Error(`Screened Patient "${screenedPatient}" not found.`);
+}
+
+// Normalize risk for consistent styling
+const normalizedRisk = selectedScreenedPatient.risk
+  ? selectedScreenedPatient.risk.toLowerCase().trim()
+  : ''
+
+const riskClass =
+  normalizedRisk.includes('low')
+    ? 'bg-green-200'
+    : normalizedRisk.includes('moderate')
+    ? 'bg-yellow-200'
+    : normalizedRisk.includes('high')
+    ? 'bg-red-200'
+    : 'bg-gray-200'; // Default color if risk is not specified
+
+---
+
+
+<Layout title={`${selectedScreenedPatient.name || 'N/A'} Overview`}>
+  <div class="container mx-auto px-4 py-8 bg-[#FDF9F4] shadow-lg rounded-lg mt-5">
+    <!-- Profile Header -->
+    <div class={`flex flex-col lg:flex-row items-center gap-6 p-6 rounded-lg shadow-md ${riskClass}`}>
+        <img src={'/Profiles/defaultimg.jpg'} alt={`${selectedScreenedPatient.name}'s Profile`} class="w-32 h-32 rounded-full shadow-md" />
+      <div class="text-center lg:text-left">
+        <h2 class="text-3xl font-bold">{selectedScreenedPatient.name || 'N/A'}</h2>
+        <p class="text-gray-700 mt-2"><strong>Age:</strong> {selectedScreenedPatient.age || 'N/A'}</p>
+        <p class="text-gray-700"><strong>Gender:</strong> {selectedScreenedPatient.gender || 'N/A'}</p>
+        <p class="mt-4 inline-block px-4 py-2 rounded-full font-medium">{selectedScreenedPatient.risk || 'N/A'}</p>
+      </div>
+    </div>
+
+    <!-- Detailed Information -->
+    <div class="mt-6 grid gap-6 lg:grid-cols-2">
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">General Information</h3>
+        <p><strong>Medical Diagnosis:</strong> {selectedScreenedPatient.medical_diagnosis || 'N/A'}</p>
+        <p><strong>Diet Prescription:</strong> {selectedScreenedPatient.diet_prescription || 'N/A'}</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Physical Metrics</h3>
+        <p><strong>Weight:</strong> {selectedScreenedPatient.weight || 'N/A'} kg</p>
+        <p><strong>Height:</strong> {selectedScreenedPatient.height || 'N/A'} cm</p>
+        <p><strong>BMI:</strong> {selectedScreenedPatient.bmi || 'N/A'}</p>
+      </div>
+    </div>
+
+    <!-- Additional Information -->
+    <div class="mt-6 bg-white p-6 rounded-lg shadow-md">
+      <h3 class="text-xl font-semibold text-gray-800 mb-4">Related Data</h3>
+      <p><strong>Clinical Conditions:</strong> {selectedScreenedPatient.clinical_conditions.map((cc) => cc.name).join(', ') || 'N/A'}</p>
+      <p><strong>Weight Histories:</strong> {selectedScreenedPatient.weight_histories.map((wh) => wh.name).join(', ') || 'N/A'}</p>
+    </div>
+
+    <div class="mt-6 flex justify-between">
+        <button onclick="history.back()" class="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300">
+          Back
+        </button>
+        <button class="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300"><a href="/Nutritionist">Refer</a></button>
+      </div>
+  </div>
+</Layout>
