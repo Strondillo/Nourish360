@@ -124,16 +124,17 @@ const { formType } = Astro.props;
         }
       }
 
-    function calculateBMI() {
+      function calculateBMI() {
       if (heightInput && weightInput && bmiInput) {
         const weight = parseFloat(weightInput.value) || 0;
         const height = parseFloat(heightInput.value) || 0;
         if (weight > 0 && height > 0) {
-          const bmi = (weight / Math.pow(height / 100, 2)).toFixed(1); // Assuming height is in cm
+          const bmi = (weight / Math.pow(height / 100, 2)).toFixed(1); // height is in cm and weight is kg
           bmiInput.value = bmi;
         } else {
           bmiInput.value = ""; // Clear BMI if input is invalid
         }
+        
       }
     }
 

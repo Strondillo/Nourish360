@@ -6,14 +6,10 @@ const { formData } = Astro.props;
     <!-- Client History Section -->
     <div class="relative p-4">
         <h3 class="font-bold text-lg mb-3">Client History (CH)</h3>
-        <textarea 
-            class="uk-textarea w-full p-2 border rounded" 
-            rows="4"
-        >{formData.clientHistory}</textarea>
         <button
         uk-toggle="target: #edit-modal"
         type="button"
-        class="absolute top-2 right-2 text-blue-500 hover:text-blue-700"
+        class="absolute top-2 right-72 left-44 text-blue-500 hover:text-blue-700"
         onclick="updateModalTitle('Client History (CH)')"
     >
       <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
@@ -26,14 +22,10 @@ const { formData } = Astro.props;
     <!-- Food/Nutrition Section -->
     <div class="relative p-4">
         <h3 class="font-bold text-lg mb-3">Food/Nutrition-Related History (FH)</h3>
-        <textarea 
-            class="uk-textarea w-full p-2 border rounded" 
-            rows="4"
-        >{formData.foodNutrition}</textarea>
         <button
         uk-toggle="target: #edit-modal"
         type="button"
-        class="absolute top-2 right-2 text-blue-500 hover:text-blue-700"
+        class="absolute top-2 right-2 left-80 text-blue-500 hover:text-blue-700"
         onclick="updateModalTitle('Food/Nutrition-Related History (FH)')"
     >
       <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
@@ -45,14 +37,10 @@ const { formData } = Astro.props;
     <!-- Biochemical Data Section -->
     <div class="relative p-4">
         <h3 class="font-bold text-lg mb-3">Biochemical Data (BD)</h3>
-        <textarea 
-            class="uk-textarea w-full p-2 border rounded" 
-            rows="4"
-        >{formData.biochemicalData}</textarea>
         <button
         uk-toggle="target: #edit-modal"
         type="button"
-        class="absolute top-2 right-2 text-blue-500 hover:text-blue-700"
+        class="absolute top-2 right-2 left-52 text-blue-500 hover:text-blue-700"
         onclick="updateModalTitle('Biochemical Data (BD)')"
     >
       <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
@@ -64,14 +52,10 @@ const { formData } = Astro.props;
     <!-- Anthropometric Measurements Section -->
     <div class="relative p-4">
         <h3 class="font-bold text-lg mb-3">Anthropometric Measurements (AD)</h3>
-        <textarea 
-            class="uk-textarea w-full p-2 border rounded" 
-            rows="4"
-        >{formData.anthropometric}</textarea>
         <button
         uk-toggle="target: #edit-modal"
         type="button"
-        class="absolute top-2 right-2 text-blue-500 hover:text-blue-700"
+        class="absolute top-2 right-2 left-80 text-blue-500 hover:text-blue-700"
         onclick="updateModalTitle('Anthropometric Measurements (AD)')"
     >
       <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
@@ -83,14 +67,10 @@ const { formData } = Astro.props;
     <!-- Nutrition-Focused Physical Findings Section -->
     <div class="relative p-4">
         <h3 class="font-bold text-lg mb-3">Nutrition-Focused Physical Findings (PD)</h3>
-        <textarea 
-            class="uk-textarea w-full p-2 border rounded" 
-            rows="4"
-        >{formData.physicalFindings}</textarea>
         <button
         uk-toggle="target: #edit-modal"
         type="button"
-        class="absolute top-2 right-2 text-blue-500 hover:text-blue-700"
+        class="absolute top-2 left-96 text-blue-500 hover:text-blue-700"
         onclick="updateModalTitle('Nutrition-Focused Physical Findings (PD)')"
     >
       <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
@@ -102,14 +82,10 @@ const { formData } = Astro.props;
     <!-- Comparative Standards Section -->
     <div class="relative p-4">
         <h3 class="font-bold text-lg mb-3">Comparative Standards (CS)</h3>
-        <textarea 
-            class="w-full p-2 border rounded" 
-            rows="4"
-        >{formData.comparativeStandards}</textarea>
         <button
         uk-toggle="target: #edit-modal"
         type="button"
-        class="absolute top-2 right-2 text-blue-500 hover:text-blue-700"
+        class="absolute top-2 left-64 text-blue-500 hover:text-blue-700"
         onclick="updateModalTitle('Comparative Standards (CS)')"
     >
       <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
@@ -141,6 +117,7 @@ const { formData } = Astro.props;
     <div class="flex justify-between mt-8">
         <button class="bg-gray-300 px-6 py-2 rounded-lg hover:bg-gray-400" onclick="window.history.back()">Back</button>
         <button type="submit" class="bg-blue-500 px-6 py-2 text-white rounded-lg hover:bg-blue-600">Save</button>
+        <button type="submit" onclick="window.location.href='/NutritionD&I'"  class="bg-blue-500 px-6 py-2 text-white rounded-lg hover:bg-blue-600">Next</button>
     </div>
 </div>
 

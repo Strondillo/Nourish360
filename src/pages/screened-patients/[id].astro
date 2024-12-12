@@ -1,0 +1,89 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { fetchScreenedPatients } from '../../utils/fetchScreenedPatients';
+import type { ScreenedPatient } from '../../types/ScreenedPatient';
+
+// Generate paths dynamically for screened patients
+export async function getStaticPaths() {
+  const screenedPatients: ScreenedPatient[] = await fetchScreenedPatients();
+
+  return screenedPatients.map((patient) => ({
+    params: { id: patient.id.toString() },
+  }));
+}
+
+// Get the patient ID from the route
+const { id } = Astro.params;
+
+// Fetch data for the specific screened patient
+const screenedPatients: ScreenedPatient[] = await fetchScreenedPatients();
+const selectedPatient = screenedPatients.find((p) => p.id === parseInt(id, 10));
+
+if (!selectedPatient) {
+  throw new Error(`Screened patient with ID ${id} not found.`);
+}
+
+// Normalize risk level for CSS styling
+const normalizedRisk = selectedPatient.risk?.toLowerCase().trim() || 'unknown';
+const riskClass = normalizedRisk === 'low' ? 'bg-green-200' :
+                  normalizedRisk === 'moderate' ? 'bg-yellow-200' :
+                  normalizedRisk === 'high' ? 'bg-red-200' :
+                  'bg-gray-200';
+
+// Use a default profile image if the property does not exist
+const profileImage = '/default-profile.png'; // Replace with your default image path if necessary
+---
+<Layout title={`${selectedPatient.name} Overview`}>
+  <div class="container mx-auto px-4 py-8 bg-[#FDF9F4] shadow-lg rounded-lg mt-5 mb-5 text-black">
+    <div class="flex gap-6">
+      <!-- Patient Summary Card -->
+      <div class={`${riskClass} p-6 rounded-lg shadow-md w-1/3`}>
+        <img src="/public/Profiles/defaultimg.jpg"  alt={selectedPatient.name} class="w-32 h-32 rounded-full mx-auto" />
+        <h2 class="text-xl font-bold text-center mt-4">{selectedPatient.name}</h2>
+        <p class="text-center font-semibold">{normalizedRisk.charAt(0).toUpperCase() + normalizedRisk.slice(1)} Risk</p>
+        <div class="mt-4">
+          <p><strong>Age:</strong> {selectedPatient.age} yrs. old</p>
+          <p><strong>Gender:</strong> {selectedPatient.gender}</p>
+          <p><strong>Weight:</strong> {selectedPatient.weight} kg</p>
+          <p><strong>Height:</strong> {selectedPatient.height} cm</p>
+          <p><strong>BMI:</strong> {selectedPatient.bmi}</p>
+        </div>
+      </div>
+      <!-- Detailed Information -->
+      <div class="flex-1 bg-white p-6 rounded-lg shadow-md text-black">
+        <h3 class="text-2xl font-semibold">Detailed Information</h3>
+        <p><strong>Medical Diagnosis:</strong> {selectedPatient.medical_diagnosis || "N/A"}</p>
+        <p><strong>Diet Prescription:</strong> {selectedPatient.diet_prescription || "N/A"}</p>
+        <p><strong>Clinical Conditions:</strong></p>
+        <ul>
+          {selectedPatient.clinical_conditions.length > 0 ? (
+            selectedPatient.clinical_conditions.map((condition) => (
+              <li>{condition.name}</li>
+            ))
+          ) : (
+            <li>No conditions specified</li>
+          )}
+        </ul>
+        <div class="mt-6">
+          <h4 class="text-xl font-semibold">Patient’s Notes</h4>
+          <textarea
+            class="w-full p-4 border rounded-lg mt-2"
+            placeholder="Enter notes for this patient."
+          ></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-between mt-8">
+        <button 
+          onclick="history.back()" 
+          class="bg-gray-200 text-black px-4 py-2 rounded hover:bg-gray-300">
+          Back
+        </button>
+        <button 
+          onclick="window.location.href='/NutritionCareProcess/Main'" 
+          class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+          Nutrition Care Process
+        </button>
+      </div>
+  </div>
+</Layout>

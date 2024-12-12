@@ -1,36 +1,16 @@
----
-const goals = [
-  { text: "Gradually Reduce Caloric Intake", note: "" },
-  { text: "Alcohol Reduction", note: "" },
-  { text: "Alcohol Reduction", note: "" },
-  { text: "Alcohol Reduction", note: "" },
-];
----
-
 <div class="p-4 border rounded-lg bg-white shadow-md h-full">
   <h2 class="font-semibold mb-4 text-center">Nutrition Intervention Plan</h2>
-  <h3 class="font-semibold mb-2">Goals:</h3>
   <ul id="goals-list" class="space-y-6">
-    {goals.map((goal, index) => (
-      <li class="border rounded-lg p-4 bg-gray-50">
-        <p class="font-semibold mb-2">{index + 1}. {goal.text}:</p>
-        <textarea
-          class="w-full p-3 border border-gray-300 rounded-md bg-gray-100"
-          placeholder="Write a text..."
-        ></textarea>
-      </li>
-    ))}
+    <!-- Dynamic goals will be added here -->
   </ul>
-  
-  
+
   <button 
     id="add-goal-button"
     class="mt-4 flex items-center justify-center w-full p-2 border border-gray-300 rounded-full text-gray-600 hover:bg-gray-200"
   >
     <span class="text-2xl">+</span>
   </button>
-  
-  
+
   <button 
     id="delete-goal-button"
     class="mt-2 flex items-center justify-center w-full p-2 border border-gray-300 rounded-full text-gray-600 hover:bg-gray-200"
@@ -41,16 +21,16 @@ const goals = [
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const goals = [
-      { text: "Gradually Reduce Caloric Intake", note: "" },
-      { text: "Alcohol Reduction", note: "" },
-      { text: "Alcohol Reduction", note: "" },
-      { text: "Alcohol Reduction", note: "" },
-    ];
+    interface Goal {
+      text: string;
+      note: string;
+    }
 
-    const goalsList = document.getElementById("goals-list");
-    const addGoalButton = document.getElementById("add-goal-button");
-    const deleteGoalButton = document.getElementById("delete-goal-button");
+    const goals: Goal[] = [];
+
+    const goalsList = document.getElementById("goals-list") as HTMLUListElement;
+    const addGoalButton = document.getElementById("add-goal-button") as HTMLButtonElement;
+    const deleteGoalButton = document.getElementById("delete-goal-button") as HTMLButtonElement;
 
     function renderGoals() {
       if (goalsList) {
@@ -59,7 +39,7 @@ const goals = [
           const goalItem = document.createElement("li");
           goalItem.className = "border rounded-lg p-4 bg-gray-50";
           goalItem.innerHTML = `
-            <p class="font-semibold mb-2">${index + 1}. ${goal.text}:</p>
+            <p class="font-semibold mb-2">${index + 1}. ${goal.text}</p>
             <textarea
               class="w-full p-3 border border-gray-300 rounded-md bg-gray-100"
               placeholder="Write a text..."
@@ -71,7 +51,7 @@ const goals = [
     }
 
     function addGoal() {
-      goals.push({ text: "New Goal", note: "" });
+      goals.push({ text: "", note: "" });
       renderGoals();
     }
 
