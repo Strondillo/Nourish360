@@ -1,0 +1,57 @@
+---
+import { fetchScreenedPatients } from "../../utils/fetchScreenedPatients";
+import { fetchPatients } from "../../utils/fetchPatients";
+
+// Fetch the data when this component loads
+const screenedPatients = await fetchScreenedPatients();
+const allPatients = await fetchPatients();
+
+// Merge or combine the data as necessary
+// Assuming we prioritize screened patients but want to display both
+const combinedPatients = [...screenedPatients, ...allPatients];
+---
+<table class="table-auto w-full border-collapse border border-gray-300">
+  <thead>
+    <tr>
+      <th class="border border-gray-300 px-4 py-2">Name</th>
+      <th class="border border-gray-300 px-4 py-2">Age</th>
+      <th class="border border-gray-300 px-4 py-2">Gender</th>
+      <th class="border border-gray-300 px-4 py-2">BMI</th>
+      <th class="border border-gray-300 px-4 py-2">Risk</th>
+    </tr>
+  </thead>
+  <tbody>
+    {combinedPatients.length > 0 ? (
+      combinedPatients.map((patient) => (
+        <tr>
+          <td class="border border-gray-300 px-4 py-2">{patient.name}</td>
+          <td class="border border-gray-300 px-4 py-2">{patient.age}</td>
+          <td class="border border-gray-300 px-4 py-2">{patient.gender}</td>
+          <td class="border border-gray-300 px-4 py-2">{patient.bmi}</td>
+          <td class="border border-gray-300 px-4 py-2">
+            <span
+              class={`px-2 py-1 rounded ${
+                patient.risk === "High"
+                  ? "bg-red-200"
+                  : patient.risk === "Moderate"
+                  ? "bg-yellow-200"
+                  : "bg-green-200"
+              }`}
+            >
+              {patient.risk}
+            </span>
+          </td>
+        </tr>
+      ))
+    ) : (
+      <tr>
+        <td
+          colspan="5"
+          class="text-center border border-gray-300 px-4 py-2 text-gray-500"
+        >
+          No patients found.
+        </td>
+      </tr>
+    )}
+  </tbody>
+</table>

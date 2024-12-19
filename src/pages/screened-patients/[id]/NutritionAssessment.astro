@@ -1,0 +1,80 @@
+---
+// imports
+import Layout from "../../../layouts/Layout.astro";
+import AssessmentForm from "../../../components/Nutrition Assessment/AssessmentForm.astro";
+import { fetchScreenedPatients } from "../../../utils/fetchScreenedPatients";
+import { ScreenedPatient } from "../../../types/ScreenedPatient";
+
+// Generate paths dynamically
+export async function getStaticPaths() {
+  const screenedPatients: ScreenedPatient[] = await fetchScreenedPatients();
+
+  return screenedPatients.map((patient) => ({
+    params: { id: patient.id.toString() },
+  }));
+}
+
+// Get the patient ID from the route
+const { id } = Astro.params;
+
+if (!id) {
+  throw new Error("Patient ID is missing in the URL.");
+}
+
+// Fetch data for the specific patient
+const screenedPatients: ScreenedPatient[] = await fetchScreenedPatients();
+const selectedPatient = screenedPatients.find((p) => p.id === parseInt(id, 10));
+
+if (!selectedPatient) {
+  throw new Error(`Patient with ID ${id} not found.`);
+}
+
+// Normalize risk level for CSS styling
+const normalizedRisk = selectedPatient.risk?.toLowerCase().trim() || 'unknown';
+const riskClass = normalizedRisk === 'low' ? 'bg-green-200' :
+                  normalizedRisk === 'moderate' ? 'bg-yellow-200' :
+                  normalizedRisk === 'high' ? 'bg-red-200' :
+                  'bg-gray-200';
+
+// Use a default profile image if the property does not exist
+const profileImage ='/Profiles/defaultimg.jpg';
+
+// Construct formData dynamically
+const formData = {
+  "Client History (CH)": selectedPatient.medical_diagnosis || "No data provided",
+  "Food/Nutrition - Related History (FH)": "No data provided",
+  "Biochemical Data (BD)": "No data provided",
+  "Anthropometric Measurements (AD)": `Weight: ${selectedPatient.weight || "N/A"} kg
+    Height: ${selectedPatient.height || "N/A"} cm
+    BMI: ${selectedPatient.bmi || "N/A"}`,
+  "Nutrition-Focused Physical Findings (PD)": selectedPatient.weight_histories || "No data provided",
+  "Comparative Standards (CS)": "No data provided",
+  "Progress Evaluation (EV)":  "No data provided",
+}
+---
+<Layout title="Nourish360" isRNDPage={true}>
+  <div class="bg-[#EDF9FF] min-h-screen w-full flex flex-col items-center py-8">
+    <!-- Title Section -->
+    <div class="text-center max-w-4xl">
+      <h1 class="text-4xl font-bold text-gray-800 mb-6">Nutrition Assessment & Reassessment</h1>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="grid grid-cols-12 gap-6 w-full max-w-7xl px-4">
+      <!-- Left Sidebar -->
+      <div class="col-span-3">
+        <div class={`rounded-lg p-4 mb-6 ${riskClass}`}>
+          <img src={profileImage} alt={selectedPatient.name} class="w-32 h-32 rounded-full mx-auto mb-4" />
+          <h2 class="font-bold text-lg text-center">{normalizedRisk.charAt(0).toUpperCase() + normalizedRisk.slice(1)} Risk</h2>
+          <h3 class="text-xl font-bold text-center mb-2">{selectedPatient.name}</h3>
+          <p class="text-center"><strong>Age:</strong> {selectedPatient.age} yrs. old</p>
+        </div>
+      </div>
+
+      <!-- Form Section -->
+      <div class="col-span-9">
+        <AssessmentForm formData={formData} />
+      </div>
+    </div>
+  </div>
+</Layout>

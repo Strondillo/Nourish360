@@ -1,0 +1,18 @@
+---
+const { title } = Astro.props;
+---
+<div class="flex">
+  <aside class="w-64 bg-gray-800 text-white">
+    <nav class="space-y-4 p-4">
+      <a href="/admin" class="block text-lg font-bold">Dashboard</a>
+      <a href="/admin/users" class="block">User Management</a>
+      <a href="/admin/patients" class="block">Patient Management</a>
+      <a href="/admin/reports" class="block">Reports & Analytics</a>
+      <a href="/admin/settings" class="block">Settings</a>
+    </nav>
+  </aside>
+  <main class="flex-1 p-6 bg-gray-100">
+    <h1 class="text-2xl font-bold mb-6">{title}</h1>
+    <slot />
+  </main>
+</div>

@@ -1,5 +1,5 @@
 ---
-import { fetchRNDAccounts } from "../../utils/fetchCustomUsers";
+import { fetchCustomUsers } from "../../utils/fetchCustomUsers";
 import { RND } from "../../types/RND";
 
 // Define the displayed user type
@@ -16,7 +16,7 @@ let customUsers: DisplayUser[] = [];
 
 try {
   // Fetch the RND accounts
-  const fetchedRNDUsers = await fetchRNDAccounts();
+  const fetchedRNDUsers = await fetchCustomUsers();
 
   // Map the fetched RND users to the display structure
   customUsers = fetchedRNDUsers.map((user: any) => ({

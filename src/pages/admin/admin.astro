@@ -1,0 +1,42 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro"; // Reusable admin layout
+import SummaryCard from "../../components/summarycard.astro"; // For stats
+import { fetchCustomUsers } from "../../utils/fetchCustomUsers";
+
+const rnds = await fetchCustomUsers("RND"); // Fetch RNDs
+const doctors = await fetchCustomUsers("Doctor"); // Fetch Doctors
+
+const stats = {
+  totalRNDs: rnds.length,
+  totalDoctors: doctors.length,
+};
+---
+<AdminLayout title="Admin Dashboard">
+  <div class="grid grid-cols-3 gap-6">
+    <SummaryCard title="Total RNDs" value={stats.totalRNDs} icon="users" />
+    <SummaryCard title="Total Doctors" value={stats.totalDoctors} icon="doctor" />
+  </div>
+
+  <div class="mt-8">
+    <h2 class="text-xl font-bold mb-4">Admin User Details</h2>
+    <table class="table-auto w-full border-collapse border border-gray-300">
+      <thead>
+        <tr>
+          <th class="border border-gray-300 px-4 py-2">Name</th>
+          <th class="border border-gray-300 px-4 py-2">Email</th>
+          <th class="border border-gray-300 px-4 py-2">Specialty</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rnds.concat(doctors).map((user) => (
+          <tr>
+            <td class="border border-gray-300 px-4 py-2">{user.name}</td>
+            <td class="border border-gray-300 px-4 py-2">{user.email}</td>
+            <td class="border border-gray-300 px-4 py-2">{user.specialty}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  
+</AdminLayout>

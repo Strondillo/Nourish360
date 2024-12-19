@@ -1,0 +1,16 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+import UserTable from "../../components/UserTable.astro";
+import AddUserModal from "../../components/AddUserModal.astro"; // Modal for adding new users
+---
+<AdminLayout title="User Management">
+    <button 
+      class="bg-blue-500 text-white px-4 py-2 rounded mb-4 hover:bg-blue-600"
+      onclick="openAddUserModal()" 
+    >
+      Add New User
+    </button>
+    <UserTable />
+    <AddUserModal />
+  </AdminLayout>
+  

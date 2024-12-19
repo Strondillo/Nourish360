@@ -1,0 +1,11 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+import PieChart from "../../components/Charts/PieChart.astro";
+import LineChart from "../../components/Charts/LineChart.astro";
+---
+<AdminLayout title="Reports & Analytics">
+  <div class="grid grid-cols-2 gap-6">
+    <PieChart data={/* Pie chart data */} />
+    <LineChart data={/* Line chart data */} />
+  </div>
+</AdminLayout>
